@@ -14,4 +14,7 @@ router.get("/:id", require("./view/get-a-studentGrade"));
 // delete a student grade
 router.delete("/:id", require("./view/delete-studentGrade"));
 
+// update a student grade
+router.patch("/:id", require("./view/update-studentGrade"))
+
 module.exports = router;
