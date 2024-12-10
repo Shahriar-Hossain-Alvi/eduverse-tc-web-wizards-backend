@@ -5,12 +5,19 @@ const ErrorResponse = require("../../../utils/middleware/error/error.response");
 module.exports = async (req, res, next) => {
 
     try {
-       
+        // get all courses
+        const result = await Course.find().select("-__v");
+
+        // if course list is empty
+        if(result.length === 0){
+            return new ErrorResponse("There are no courses available", 404)
+        }
+
         // send response
         res.status(200).json({
 			success: true,
 			message: "Data fetched successfully",
-            
+            data: result
 		});
 
     } catch (error) {
