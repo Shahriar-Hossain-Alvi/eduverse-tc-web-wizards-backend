@@ -16,4 +16,8 @@ router.use("/CourseFacultyAssignments", require("./CourseFacultyAssignments"));
 //show CourseFacultyAssignments list
 router.use("/courseStudentEnrollment", require("./courseStudentEnrollment"));
 
+
+// for student grades
+router.use("/studentGrades", require("./studentGrades"));
+
 module.exports = router;
