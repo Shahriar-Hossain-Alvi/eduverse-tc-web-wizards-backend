@@ -17,6 +17,10 @@ router.get("/:id", require("./view/get-a-courseMaterial"));
 router.delete("/:id", require("./view/delete-courseMaterial.js"))
 
 
+// update a course material
+router.patch("/:id", require("./view/update-courseMaterial.js"))
+
+
 
 
 
