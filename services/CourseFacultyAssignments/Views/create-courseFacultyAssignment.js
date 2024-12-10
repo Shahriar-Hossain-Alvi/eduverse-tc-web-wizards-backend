@@ -19,6 +19,7 @@ module.exports = async (req, res, next) => {
     if (!Array.isArray(users_id) || !users_id.every(id => mongoose.Types.ObjectId.isValid(id))) {
         return next(new ErrorResponse("Invalid faculty user ID(s).", 400));
     }
+    
     if (!mongoose.Types.ObjectId.isValid(course_id)) {
         return next(new ErrorResponse("Invalid course ID", 400));
     }

@@ -20,4 +20,7 @@ router.use("/courseStudentEnrollment", require("./courseStudentEnrollment"));
 // for student grades
 router.use("/studentGrades", require("./studentGrades"));
 
+// for classes
+router.use("/classes", require("./classes"));
+
 module.exports = router;
