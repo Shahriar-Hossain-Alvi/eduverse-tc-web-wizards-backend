@@ -10,7 +10,10 @@ router.post("/", require("./Views/create-courseStudentEnrollment"));
 // get a courseStudentEnrollment
  router.get("/:id", require("./Views/get-a-courseStudentEnrollment"));
 
-// get a courseStudentEnrollment
+// delete a courseStudentEnrollment
+ router.delete("/:id", require("./Views/delete-courseStudentEnrollment"));
+ 
+// delete a courseStudentEnrollment
  router.delete("/:id", require("./Views/delete-courseStudentEnrollment"));
 
 module.exports = router;
