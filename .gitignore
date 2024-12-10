@@ -132,3 +132,4 @@ dist
 # env files
 .env
 .env.*
+.vercel

@@ -8,6 +8,10 @@ const verifyToken = require("../../utils/middleware/token-verification/auth.midd
 router.get("/", verifyToken, require("./views/get-users"));
 
 
+// Get all faculty
+router.get("/allFaculty", verifyToken, require("./views/get-all-faculty"));
+
+
 // Create a new user
 router.post("/", verifyToken, require("./views/create-user"));
 
