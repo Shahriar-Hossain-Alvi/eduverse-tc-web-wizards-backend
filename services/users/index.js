@@ -5,7 +5,7 @@ const verifyToken = require("../../utils/middleware/token-verification/auth.midd
 
 
 // Get all users
-router.get("/", require("./views/get-users"));
+router.get("/", verifyToken, require("./views/get-users"));
 
 
 // Get all faculty
