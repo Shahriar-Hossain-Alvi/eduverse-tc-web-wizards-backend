@@ -1,8 +1,6 @@
 const ErrorResponse = require("../../../utils/middleware/error/error.response");
 const User = require("../schema/user.schema");
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const { ACCESS_TOKEN_SECRET } = require("../../../configuration");
 
 
 // Create a new User 
@@ -40,17 +38,9 @@ module.exports = async (req, res, next) => {
 		// save the new user in the DB
 		const result = await newUser.save();
 
-
-		// Generate JWT token
-		const token = jwt.sign(
-			{ id: result._id, email: result.email }, ACCESS_TOKEN_SECRET, { expiresIn: '12h' }
-		);
-
-
 		res.status(201).json({
 			success: true,
 			message: `Account with ${result.email} email created successfully`,
-			token
 		});
 	} catch (error) {
 		// Send Error Response
