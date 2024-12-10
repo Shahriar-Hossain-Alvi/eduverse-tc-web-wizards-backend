@@ -1,4 +1,5 @@
 const ErrorResponse = require("../../../utils/middleware/error/error.response");
+const Course = require("../schema/course.schema");
 
 
 // get all courses
