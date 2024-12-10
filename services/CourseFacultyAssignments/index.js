@@ -10,4 +10,7 @@ router.get("/", require("./Views/get-courseFacultyAssignment"));
 // get all courseFacultyAssignment
 router.get("/:id", require("./Views/get-a-courseFacultyAssignment"));
 
+// get all courseFacultyAssignment
+router.delete("/:id", require("./Views/delete-courseFacultyAssignment"));
+
 module.exports = router;
