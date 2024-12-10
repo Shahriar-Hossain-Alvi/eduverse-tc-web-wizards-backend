@@ -1,25 +1,40 @@
+const mongoose = require("mongoose");
 const User = require("../schema/user.schema");
+const ErrorResponse = require("../../../utils/middleware/error/error.response");
 
+
+// update a user data
 module.exports = async (req, res, next) => {
 	const {
 		params: { id },
-		body: { first_name, last_name, contact, address, is_active },
+		body: { first_name, last_name, phone, address, is_active },
 	} = req;
 
+
+	// check if the id is a valid mongodb id
+	if (!mongoose.Types.ObjectId.isValid(id)) {
+		return next(new ErrorResponse("Invalid user ID", 400));
+	}
+
 	try {
-		const user = await User.findOne({ _id: id });
+		// create a update data object 
+		const updateData = {};
+		if(first_name) updateData.first_name = first_name;
+		if(last_name) updateData.last_name = last_name;
+		if(phone) updateData.phone = phone;
+		if(address) updateData.address = address;
+		if (typeof is_active !== "undefined") {
+			updateData.is_active = is_active; // Update the field if is_active is provided
+		  }
+		
 
-		if (!user) return next(new ErrorResponse("No user found!", 404));
+		// find user by id and update
+		const result = await User.findByIdAndUpdate(id, updateData, {
+			new: true, // returns the updated doc instead the old one
+			runValidators: true //runs schema validation after updating the fields
+		}).select("-password_hashed -__v");
 
-		// Update the user data with the provided information
-		user.first_name = first_name;
-		user.last_name = last_name;
-		user.contact = contact;
-		user.address = address;
-		user.is_active = is_active;
-
-		// save the updated user data
-		const result = await user.save();
+		if (!result) return next(new ErrorResponse("No user found!", 404));
 
 		res.status(200).json({
 			success: true,
