@@ -15,6 +15,10 @@ router.post("/", require("./views/create-user"));
 router.post("/login", require("./views/login-a-user"));
 
 
+// get user number
+router.get("/totalUsersNumber", require("./views/get-total-user-number"));
+
+
 // Get a user by id
 router.get("/:id", require("./views/get-a-user"));
 
