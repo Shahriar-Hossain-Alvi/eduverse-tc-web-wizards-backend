@@ -3,6 +3,7 @@ const router = express.Router();
 
 
 
+
 // Get all users
 router.get("/", require("./views/get-users"));
 
@@ -29,5 +30,6 @@ router.patch("/:id", require("./views/update-user"));
 
 // Delete a user by id
 router.delete("/:id", require("./views/delete-user"));
+
 
 module.exports = router;

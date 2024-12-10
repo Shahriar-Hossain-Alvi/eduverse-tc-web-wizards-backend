@@ -13,6 +13,10 @@ router.get("/", require("./view/get-courseMaterial"));
 router.get("/:id", require("./view/get-a-courseMaterial"));
 
 
+// delete a course material
+router.delete("/:id", require("./view/delete-courseMaterial.js"))
+
+
 
 
 
