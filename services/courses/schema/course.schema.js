@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const courseSchema = new mongoose.Schema({
     title: { type: String, required: true },
     description: { type: String, required: true },
-    cover_url: { type: String, required: true },
+    cover_url: { type: String, default: "" },
     total_available_seats: { type: Number, required: true },
     start_date: { type: Date, required: true },
     end_date: { type: Date, required: true },
