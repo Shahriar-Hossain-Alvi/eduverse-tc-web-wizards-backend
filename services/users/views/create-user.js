@@ -1,3 +1,4 @@
+const ErrorResponse = require("../../../utils/middleware/error/error.response");
 const User = require("../schema/user.schema");
 
 module.exports = async (req, res, next) => {
