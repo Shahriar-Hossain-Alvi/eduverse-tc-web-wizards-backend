@@ -9,4 +9,11 @@ router.post("/", require("./view/create-courseMaterial"));
 router.get("/", require("./view/get-courseMaterial"));
 
 
+// get single course material
+router.get("/:id", require("./view/get-a-courseMaterial"));
+
+
+
+
+
 module.exports = router;
