@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 
 
-const courseMaterials = new mongoose.Schema({
+const courseMaterialSchema = new mongoose.Schema({
     title: { type: String, required: true },
     description: { type: String, required: true },
     class_id: {
@@ -20,4 +20,9 @@ const courseMaterials = new mongoose.Schema({
         required: true
     },
     isActive: { type: Boolean, default: true }
-}, { timestamps: true })
+}, { timestamps: true });
+
+
+const ClassMaterial = mongoose.model("ClassMaterial", courseMaterialSchema);
+
+module.exports = ClassMaterial;
