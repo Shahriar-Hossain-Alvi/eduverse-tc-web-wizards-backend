@@ -12,7 +12,7 @@ module.exports = async (req, res, next) => {
     if (!id) {
         return next(new ErrorResponse("id is required", 400));
     }
-    
+
     // check if the id is a valid mongodb id
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return next(new ErrorResponse("Invalid class ID", 400));

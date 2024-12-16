@@ -11,4 +11,8 @@ router.get("/", require("./controllers/get-classes"));
 // get all classes
 router.get("/:id", require("./controllers/get-a-classes"));
 
+
+// delete a class
+router.delete("/:id", require("./controllers/delete-classes"));
+
 module.exports = router;
