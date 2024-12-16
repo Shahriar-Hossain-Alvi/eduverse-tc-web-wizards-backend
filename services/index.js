@@ -1,26 +1,25 @@
 const express = require("express");
 const router = express.Router();
 
-//show users list
+//Users Route
 router.use("/users", require("./users"));
 
-//show courses list
+//Courses Route
 router.use("/courses", require("./courses"));
 
-//show courseMaterials list
+//CourseMaterials  Route
 router.use("/courseMaterials", require("./courseMaterials"));
 
-//show CourseFacultyAssignments list
+//CourseFacultyAssignments Route
 router.use("/CourseFacultyAssignments", require("./CourseFacultyAssignments"));
 
-//show CourseFacultyAssignments list
+//CourseStudentEnrollment Route
 router.use("/courseStudentEnrollment", require("./courseStudentEnrollment"));
 
-
-// for student grades
+//Student grades Route
 router.use("/studentGrades", require("./studentGrades"));
 
-// for classes
+//classes Route
 router.use("/classes", require("./classes"));
 
 module.exports = router;

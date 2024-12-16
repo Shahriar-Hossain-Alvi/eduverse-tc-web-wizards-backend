@@ -3,23 +3,23 @@ const router = express.Router();
 const verifyToken = require("../../utils/middleware/token-verification/auth.middleware")
 
 // crate new course material
-router.post("/", verifyToken, require("./controllers/create-courseMaterial"));
+router.post("/", require("./controllers/create-courseMaterial"));
 
 
 // get all course material
-router.get("/", verifyToken, require("./controllers/get-courseMaterial"));
+router.get("/", require("./controllers/get-courseMaterial"));
 
 
 // get single course material
-router.get("/:id",verifyToken,  require("./controllers/get-a-courseMaterial"));
+router.get("/:id",  require("./controllers/get-a-courseMaterial"));
 
 
 // delete a course material
-router.delete("/:id",verifyToken, require("./controllers/delete-courseMaterial.js"))
+router.delete("/:id", require("./controllers/delete-courseMaterial.js"))
 
 
 // update a course material
-router.patch("/:id",verifyToken, require("./controllers/update-courseMaterial.js"))
+router.patch("/:id", require("./controllers/update-courseMaterial.js"))
 
 
 

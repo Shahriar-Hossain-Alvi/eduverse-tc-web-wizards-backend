@@ -3,19 +3,19 @@ const router = express.Router();
 const verifyToken = require("../../utils/middleware/token-verification/auth.middleware")
 
 // give grade to a course
-router.post("/", verifyToken, require("./controllers/create-studentGrade"))
+router.post("/", require("./controllers/create-studentGrade"))
 
 
 // get all grades data
-router.get("/", verifyToken, require("./controllers/get-studentGrades"));
+router.get("/", require("./controllers/get-studentGrades"));
 
 // get single student grades
-router.get("/:id", verifyToken, require("./controllers/get-a-studentGrade"));
+router.get("/:id", require("./controllers/get-a-studentGrade"));
 
 // delete a student grade
-router.delete("/:id", verifyToken, require("./controllers/delete-studentGrade"));
+router.delete("/:id", require("./controllers/delete-studentGrade"));
 
 // update a student grade
-router.patch("/:id", verifyToken, require("./controllers/update-studentGrade"))
+router.patch("/:id", require("./controllers/update-studentGrade"))
 
 module.exports = router;
