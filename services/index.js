@@ -11,7 +11,7 @@ router.use("/courses", require("./courses"));
 router.use("/courseMaterials", require("./courseMaterials"));
 
 //CourseFacultyAssignments Route
-router.use("/CourseFacultyAssignments", require("./CourseFacultyAssignments"));
+router.use("/courseFacultyAssignments", require("./courseFacultyAssignments"));
 
 //CourseStudentEnrollment Route
 router.use("/courseStudentEnrollment", require("./courseStudentEnrollment"));
