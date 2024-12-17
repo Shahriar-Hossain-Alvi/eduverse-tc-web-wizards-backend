@@ -22,4 +22,8 @@ router.use("/studentGrades", require("./studentGrades"));
 //classes Route
 router.use("/classes", require("./classes"));
 
+
+// class material route
+router.use("/classMaterials", require("./classMaterials"))
+
 module.exports = router;

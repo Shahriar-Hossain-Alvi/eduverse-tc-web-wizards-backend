@@ -1,63 +1,64 @@
 const mongoose = require('mongoose');
 const ErrorResponse = require("../../../utils/middleware/error/error.response");
 const ClassMaterial = require('../schema/classMaterials.schema');
-const Course = require("../../courses/schema/course.schema");
+const Class = require("../../classes/schema/classes.schema");
 const User = require("../../users/schema/user.schema");
 
 
 
 module.exports = async (req, res, next) => {
-    const { title, description, course_id, material_url, created_by } = req.body;
+    const { title, description, class_id, material_url, created_by } = req.body;
 
     // Check if required fields are present
-    if (!title || !description || !course_id || !material_url || !created_by) {
-        return next(new ErrorResponse("Title, description, course_id, material_url, and created_by are required.", 400));
+    if (!title || !description || !class_id || !material_url || !created_by) {
+        return next(new ErrorResponse("Title, description, class_id, material_url, and created_by are required.", 400));
     }
 
     // Validate MongoDB ObjectId
-    if (!mongoose.Types.ObjectId.isValid(course_id) || !mongoose.Types.ObjectId.isValid(created_by)) {
-        return next(new ErrorResponse("Invalid course_id or created_by ID", 400));
+    if (!mongoose.Types.ObjectId.isValid(class_id) || !mongoose.Types.ObjectId.isValid(created_by)) {
+        return next(new ErrorResponse("Invalid class_id or created_by ID", 400));
     }
 
     try {
         // Check if the course exists in the database
-        const courseExists = await Course.findById(course_id);
-        if (!courseExists) {
-            return next(new ErrorResponse("Course not found.", 404));
+        const isClassExists = await Class.findById(class_id);
+        if (!isClassExists) {
+            return next(new ErrorResponse("Class not found.", 404));
         }
 
         // Check if the faculty(user) exists in the database
-        const userExists = await User.findById(created_by);
-        if (!userExists) {
+        const isUserExists = await User.findById(created_by);
+        if (!isUserExists) {
             return next(new ErrorResponse("Faculty (User) not found.", 404));
         }
 
-        // Check if the same material (same course_id and title) already exists
-        const existingMaterial = await CourseMaterial.findOne({
-            course_id,
-            title,
-            material_url // Optional
-        });
 
-        if (existingMaterial) {
-            return next(new ErrorResponse("This material already exists for the course.", 400));
+        // Check if the same material (same class_id and title) already exists
+        const isSameMaterialExists = await ClassMaterial.findOne({
+            class_id,
+            title,
+            material_url
+        });
+        if (isSameMaterialExists) {
+            return next(new ErrorResponse("Same course material with same title and class_id already exists.", 404));
         }
 
+
         // Create a new course material
-        const newCourseMaterial = new CourseMaterial({
+        const newClassMaterial = new ClassMaterial({
             title,
             description,
-            course_id,
+            class_id,
             material_url,
             created_by,
         });
 
-        await newCourseMaterial.save();
+        const result = await newClassMaterial.save();
 
         // Return success response
         res.status(201).json({
             success: true,
-            message: "Course material created successfully.",
+            message: `Class material named ${result.title} created successfully.`,
         });
     } catch (error) {
         next(error);
