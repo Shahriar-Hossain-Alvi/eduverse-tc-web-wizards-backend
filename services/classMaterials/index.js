@@ -9,7 +9,11 @@ router.post("/", require("./controllers/create-classMaterial"));
 router.get("/", require("./controllers/get-all-classMaterials"));
 
 // get a class material
-router.get("/:id", require("./controllers/get-a-classMaterials"))
+router.get("/:id", require("./controllers/get-a-classMaterials"));
+
+
+// delete class material
+router.delete("/:id", require("./controllers/delete-classMaterial"))
 
 module.exports = router;
 
