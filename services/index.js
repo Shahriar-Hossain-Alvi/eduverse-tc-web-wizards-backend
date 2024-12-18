@@ -26,4 +26,8 @@ router.use("/classes", require("./classes"));
 // class material route
 router.use("/classMaterials", require("./classMaterials"))
 
+
+// class attendance route
+router.use("/classAttendance", require("./classAttendance"));
+
 module.exports = router;
