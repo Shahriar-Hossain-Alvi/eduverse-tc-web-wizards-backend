@@ -7,4 +7,8 @@ const router = express.Router();
 router.post("/", require("./controllers/create-classAttendance"))
 
 
+// get class attendance for a specific class
+router.get("/:class_id", require("./controllers/get-a-classAttendance"));
+
+
 module.exports = router;
