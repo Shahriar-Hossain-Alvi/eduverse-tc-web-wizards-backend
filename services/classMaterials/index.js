@@ -15,6 +15,10 @@ router.get("/:id", require("./controllers/get-a-classMaterials"));
 // delete class material
 router.delete("/:id", require("./controllers/delete-classMaterial"))
 
+
+// update class materials
+router.patch("/:id", require("./controllers/update-classMaterial"));
+
 module.exports = router;
 
 
