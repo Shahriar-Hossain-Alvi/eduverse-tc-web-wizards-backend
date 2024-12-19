@@ -1,4 +1,3 @@
-const mongoose = require("mongoose");
 const ErrorResponse = require("../../../utils/middleware/error/error.response");
 const bcrypt = require('bcryptjs');
 const User = require("../schema/user.schema");
