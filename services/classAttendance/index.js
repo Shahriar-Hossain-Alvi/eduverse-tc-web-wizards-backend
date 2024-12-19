@@ -11,8 +11,15 @@ router.post("/", require("./controllers/create-classAttendance"));
 router.get("/", require("./controllers/get-all-classAttendance"));
 
 
+// delete class attendance
+router.delete("/:id", require("./controllers/delete-classAttendance"));
+
+
 // get class attendance for a specific class
 router.get("/:class_id", require("./controllers/get-a-classAttendance"));
+
+
+
 
 
 
