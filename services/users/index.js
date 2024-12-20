@@ -16,12 +16,15 @@ router.get("/allFaculty", require("./controllers/get-all-faculty"));
 router.post("/", require("./controllers/create-user"));
 
 
+// get user number
+router.get("/totalUsersNumber", require("./controllers/get-total-user-number"));
+
+
 // login a user
 router.post("/login", require("./controllers/login-a-user"));
 
-
-// get user number
-router.get("/totalUsersNumber", require("./controllers/get-total-user-number"));
+// update user password after first login
+router.patch("/updatePassword/:id", require("./controllers/update-user-password"));
 
 
 // Get a user by id

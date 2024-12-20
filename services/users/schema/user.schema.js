@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema(
 			match: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
 		},
 		password_hashed: { type: String, required: true },
+		password_update_required: { type: Boolean, default: true },
 		user_role: {
 			type: String,
 			enum: ["student", "faculty", "admin"],
@@ -28,3 +29,4 @@ const userSchema = new mongoose.Schema(
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;
+

@@ -31,6 +31,11 @@ module.exports = async (req, res, next) => {
             return next(new ErrorResponse("Invalid credentials", 401));
         }
 
+        // Check if password update is required
+        if (user.password_update_required) {
+            return next(new ErrorResponse("You must update your password before proceeding", 403));
+        }
+
         // Generate JWT token
         const token = jwt.sign(
             { id: user._id, email: user.email }, ACCESS_TOKEN_SECRET, { expiresIn: '12h' }

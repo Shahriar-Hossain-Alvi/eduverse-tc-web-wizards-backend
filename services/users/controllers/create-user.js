@@ -34,7 +34,7 @@ module.exports = async (req, res, next) => {
 		const hashedPass = await bcrypt.hashSync(password.toString(), salt);
 
 		// create a new user
-		const newUser = new User({ email, password_hashed: hashedPass, user_role, first_name, last_name, user_name });
+		const newUser = new User({ email, password_hashed: hashedPass, user_role, first_name, last_name, user_name, password_update_required: true });
 		// save the new user in the DB
 		const result = await newUser.save();
 
