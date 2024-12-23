@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const verifyToken = require("../../utils/middleware/token-verification/auth.middleware")
 
+// Apply middleware globally for all remaining routes
+router.use(verifyToken)
 
 // create class materials
 router.post("/", require("./controllers/create-classMaterial"));

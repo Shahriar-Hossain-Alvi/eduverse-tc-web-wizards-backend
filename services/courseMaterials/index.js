@@ -2,6 +2,9 @@ const express = require("express");
 const router = express.Router();
 const verifyToken = require("../../utils/middleware/token-verification/auth.middleware")
 
+// Apply middleware globally for all remaining routes
+router.use(verifyToken)
+
 // crate new course material
 router.post("/", require("./controllers/create-courseMaterial"));
 
