@@ -8,7 +8,7 @@ const verifyToken = (req, res, next) => {
             new ErrorResponse("Unauthorized access", 401)
         )
     }
-    console.log(req.headers.authorization);
+    // console.log(req.headers.authorization);
 
     // extract the token from authorization header
     const token = req.headers.authorization.split(' ')[1];
@@ -22,8 +22,8 @@ const verifyToken = (req, res, next) => {
         }
 
         req.decoded = decoded; // Attach decoded token to request object. The user details will be found in req.decoded
-        console.log(decoded);
-        console.log(req.decoded);
+        // console.log(decoded);
+        // console.log(req.decoded);
         next();
     });
 };
