@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const verifyToken = require("../../utils/middleware/token-verification/auth.middleware")
-
+const verifyRole = require("../../utils/middleware/role-verification/verifyRole.middleware");
 
 // login a user ^^^ this route does not need verify token
 router.post("/login", require("./controllers/login-a-user"));
@@ -9,8 +9,11 @@ router.post("/login", require("./controllers/login-a-user"));
 
 router.use(verifyToken);
 
+// get user data by user role
+// router.get("/me", require("./controllers/me"));
+
 // Get all users
-router.get("/", require("./controllers/get-users"));
+router.get("/", verifyRole("admin"), require("./controllers/get-users"));
 
 // Get all faculty
 router.get("/allFaculty", require("./controllers/get-all-faculty"));
