@@ -1,4 +1,3 @@
-const mongoose = require("mongoose");
 const User = require("../../users/schema/user.schema");
 const Course = require("../../courses/schema/course.schema");
 const ErrorResponse = require("../../../utils/middleware/error/error.response");

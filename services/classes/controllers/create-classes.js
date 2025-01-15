@@ -3,6 +3,7 @@ const ErrorResponse = require('../../../utils/middleware/error/error.response');
 const Class = require('../schema/classes.schema');
 const Course = require('../../courses/schema/course.schema');
 const User = require('../../users/schema/user.schema');
+const logActivity = require("../../../utils/LogActivity/logActivity");
 
 
 module.exports = async (req, res, next) => {
@@ -59,6 +60,11 @@ module.exports = async (req, res, next) => {
 
         // Save the class to the database
         const result = await newClass.save();
+
+        await logActivity(
+			`New class scheduled`,
+			`New class: ${title} for courseID: ${course_id}  is created by facultyID: ${faculty_id}`
+		)
 
         // Return success response
         res.status(201).json({

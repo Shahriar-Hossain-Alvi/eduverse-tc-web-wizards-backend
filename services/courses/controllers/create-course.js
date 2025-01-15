@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const ErrorResponse = require("../../../utils/middleware/error/error.response");
 const User = require("../../users/schema/user.schema");
 const Course = require("../schema/course.schema");
-
+const logActivity = require("../../../utils/LogActivity/logActivity");
 
 
 // create a new course
@@ -79,7 +79,10 @@ module.exports = async (req, res, next) => {
         const result = await newCourse.save();
 
 
-
+        await logActivity(
+			`New course: ${title} created`,
+			`A new Course: ${title} is created.`
+		)
 
 
 

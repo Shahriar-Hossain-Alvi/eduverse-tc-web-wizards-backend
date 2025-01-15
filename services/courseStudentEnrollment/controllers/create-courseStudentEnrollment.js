@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const ErrorResponse = require("../../../utils/middleware/error/error.response");
-
+const logActivity = require("../../../utils/LogActivity/logActivity");
 const User = require("../../users/schema/user.schema")
 const Course = require("../../courses/schema/course.schema");
 const CourseStudentEnrollment = require('../schema/courseStudentEnrollment.schema');
@@ -45,6 +45,13 @@ module.exports = async (req, res, next) => {
         });
 
         await newEnrollment.save();
+
+        
+
+        await logActivity(
+			`Student enrolled in a course`,
+			`Student ID: ${users_id} have enrolled in the course ID: ${course_id}.`
+		)
 
         // Return success response
         res.status(201).json({

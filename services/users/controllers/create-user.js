@@ -1,7 +1,7 @@
 const ErrorResponse = require("../../../utils/middleware/error/error.response");
 const User = require("../schema/user.schema");
 const bcrypt = require('bcryptjs');
-
+const logActivity = require("../../../utils/LogActivity/logActivity");
 
 // Create a new User 
 module.exports = async (req, res, next) => {
@@ -37,6 +37,11 @@ module.exports = async (req, res, next) => {
 		const newUser = new User({ email, password_hashed: hashedPass, user_role, first_name, last_name, user_name, password_update_required: true });
 		// save the new user in the DB
 		const result = await newUser.save();
+
+		await logActivity(
+			`New ${user_role} Registered`,
+			`User ${first_name} ${last_name} (${email}) created successfully`
+		)
 
 		res.status(201).json({
 			success: true,

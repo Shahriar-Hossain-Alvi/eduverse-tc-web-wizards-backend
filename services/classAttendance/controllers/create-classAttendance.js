@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const ClassAttendance = require("../schema/classAttendance.schema");
 const ErrorResponse = require("../../../utils/middleware/error/error.response");
+const logActivity = require("../../../utils/LogActivity/logActivity");
 
 module.exports = async (req, res, next) => {
     const { class_id, attendance_date, created_by, attendance_record } = req.body;
@@ -56,6 +57,11 @@ module.exports = async (req, res, next) => {
         });
 
         await newAttendance.save();
+
+        await logActivity(
+			`Class attendance uploaded`,
+			`Attendance for classID: ${class_id} was uploaded by facultyID: ${created_by}`
+		)
 
         res.status(201).json({
             success: true,

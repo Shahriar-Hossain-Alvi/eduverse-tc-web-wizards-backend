@@ -3,6 +3,7 @@ const ErrorResponse = require("../../../utils/middleware/error/error.response");
 const CourseMaterial = require('../schema/courseMaterial.schema');
 const Course = require("../../courses/schema/course.schema");
 const User = require("../../users/schema/user.schema");
+const logActivity = require("../../../utils/LogActivity/logActivity");
 
 module.exports = async (req, res, next) => {
     const { title, description, course_id, material_url, created_by } = req.body;
@@ -51,6 +52,11 @@ module.exports = async (req, res, next) => {
         });
 
         await newCourseMaterial.save();
+
+        await logActivity(
+			`Course material uploaded`,
+			`Course material for courseID: ${course_id} is created by facultyID: ${created_by}`
+		)
 
         // Return success response
         res.status(201).json({
