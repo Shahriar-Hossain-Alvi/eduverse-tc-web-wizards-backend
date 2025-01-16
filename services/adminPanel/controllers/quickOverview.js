@@ -1,6 +1,7 @@
 const User = require("../../users/schema/user.schema");
 const Course = require("../../courses/schema/course.schema");
 const ErrorResponse = require("../../../utils/middleware/error/error.response");
+const ActivityLog = require("../../../utils/LogActivity/schema/activityLog.schema");
 
 module.exports = async(req, res)=>{
     try{
@@ -9,11 +10,14 @@ module.exports = async(req, res)=>{
         const totalCourses = await Course.countDocuments();
         const activeCourses = await Course.countDocuments({is_active: true});
 
+        const activities = await ActivityLog.find().sort({timestamp: -1}).limit(6);
+
         const quickOverView = {
             totalCourses: totalCourses,
             totalFaculty: totalFaculty,
             totalStudents:totalStudents,
-            activeCourses:activeCourses
+            activeCourses:activeCourses,
+            activities: activities
         }
 
 
