@@ -4,7 +4,6 @@ const ErrorResponse = require("../../../utils/middleware/error/error.response");
 
 module.exports = async (req, res, next) => {
     const { id } = req.params;
-    console.log(id);
 
     // Validate MongoDB ObjectId for class_id
     if (!mongoose.Types.ObjectId.isValid(id)) {
