@@ -38,6 +38,8 @@ module.exports = async (req, res, next) => {
 		// save the new user in the DB
 		const result = await newUser.save();
 
+
+		// save new activity
 		await logActivity(
 			`New ${user_role} Registered`,
 			`User ${first_name} ${last_name} (${email}) created successfully`
