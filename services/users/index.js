@@ -45,11 +45,11 @@ router.patch("/updatePassword/:id", verifyRole("student", "faculty"), require(".
 router.get("/:id", verifyRole("admin"), require("./controllers/get-a-user"));
 
 
-// Update a user by id
+// Update a user by id => used by all users to update their info
 router.patch("/:id", require("./controllers/update-user"));
 
 
-// Delete a user by id
+// Delete a user by id => used by admin to delete a user
 router.delete("/:id", require("./controllers/delete-user"));
 
 
