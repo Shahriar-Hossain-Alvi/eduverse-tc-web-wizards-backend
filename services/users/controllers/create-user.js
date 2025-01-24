@@ -41,7 +41,7 @@ module.exports = async (req, res, next) => {
 
 		// save new activity
 		await logActivity(
-			`New ${user_role} Registered`,
+			`New ${user_role}: ${email} created`,
 			`User ${first_name} ${last_name} (${email}) created successfully`
 		)
 

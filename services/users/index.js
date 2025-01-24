@@ -36,7 +36,7 @@ router.get("/totalUsersNumber", require("./controllers/get-total-user-number"));
 
 
 // update user password after first login => used to update the password in the profile page
-router.patch("/updatePassword/:id", verifyRole("student", "faculty"), require("./controllers/update-user-password"));
+router.patch("/updatePassword/:id", verifyRole("student", "faculty", "admin"), require("./controllers/update-user-password"));
 
 
 

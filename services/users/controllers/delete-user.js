@@ -1,7 +1,7 @@
 const mongoose  = require("mongoose");
 const ErrorResponse = require("../../../utils/middleware/error/error.response");
 const User = require("../schema/user.schema");
-
+const logActivity = require("../../../utils/LogActivity/logActivity");
 
 
 // delete a user data
@@ -20,6 +20,12 @@ module.exports = async (req, res, next) => {
 		if (!result) {
 			return next(new ErrorResponse("User not found", 404));
 		}
+
+		// save new activity
+		await logActivity(
+			`User ${id} deleted`,
+			`User ${id} deleted successfully`
+		)
 
 		// Send success response
 		res.status(200).json({
