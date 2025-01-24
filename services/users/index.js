@@ -10,13 +10,13 @@ router.post("/login", require("./controllers/login-a-user")); // used in login p
 router.use(verifyToken); // will apply to the below routes
 
 
-// Get all users
-router.get("/", verifyRole("admin"), require("./controllers/get-users")); // used in admins Users route to show list
+// Get all users => used in admins Users route to show list 
+router.get("/", verifyRole("admin"), require("./controllers/get-users")); 
 
 
 
-// get user data by user role
-router.get("/me", require("./controllers/me")); // used to fetch user data after login
+// get user data by user role => used to fetch user data after login
+router.get("/me", require("./controllers/me")); 
 
 
 
@@ -26,7 +26,7 @@ router.get("/allFaculty", require("./controllers/get-all-faculty"));
 
 
 
-// Create a new user => used in create account page of admin
+// Create a new user => used in create-account page of admin panel
 router.post("/", verifyRole("admin"), require("./controllers/create-user"));
 
 

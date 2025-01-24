@@ -9,6 +9,7 @@ module.exports = async (req, res, next) => {
         params: { id },
     } = req;
 
+
     if (!id) {
         return next(new ErrorResponse("id is required", 400))
     }
@@ -20,7 +21,7 @@ module.exports = async (req, res, next) => {
 
     try {
         // check if the course exists or not
-        const result = await Course.findById(id).select("-__v");
+        const result = await Course.findById(id).select("-__v").populate("assigned_faculty", "first_name last_name email").populate("prerequisites", "title credits");;
 
         // if course is not found
         if (!result) {
