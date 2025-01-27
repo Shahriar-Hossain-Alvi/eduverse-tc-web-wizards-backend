@@ -21,8 +21,8 @@ router.get("/me", require("./controllers/me"));
 
 
 
-// Get all faculty
-router.get("/allFaculty", require("./controllers/get-all-faculty"));
+// Get all faculty => get faculty name, id and admin will assign them to courses 
+router.get("/allFacultyNames", verifyRole("admin"), require("./controllers/get-all-facultyNames"));
 
 
 

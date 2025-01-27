@@ -80,7 +80,7 @@ module.exports = async (req, res, next) => {
 
 
         await logActivity(
-			`New course: ${title} created`,
+			`New course: ${title} added`,
 			`A new Course: ${title} is created.`
 		)
 

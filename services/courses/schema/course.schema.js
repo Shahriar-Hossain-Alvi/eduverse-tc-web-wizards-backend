@@ -24,4 +24,16 @@ const courseSchema = new mongoose.Schema({
 
 const Course = mongoose.model("Course", courseSchema);
 
+
+courseSchema.pre("save", (next)=>{
+    const currentDate = new Date();
+    const courseEndDate = new Date(this.end_date);
+
+    if(courseEndDate < currentDate){
+        this.is_active = false;
+    }
+
+    next();
+})
+
 module.exports = Course;

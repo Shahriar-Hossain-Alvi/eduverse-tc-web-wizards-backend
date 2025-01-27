@@ -21,12 +21,21 @@ module.exports = async (req, res, next) => {
 
     try {
         // check if the course exists or not
-        const result = await Course.findById(id).select("-__v").populate("assigned_faculty", "first_name last_name email").populate("prerequisites", "title credits");;
+        const result = await Course.findById(id).select("-__v").populate("assigned_faculty", "first_name last_name email").populate("prerequisites", "title credits cover_url");
 
         // if course is not found
         if (!result) {
             return next(new ErrorResponse(`There are no course found with this ID: ${id}`, 404))
         }
+
+        const currentDate = new Date();
+        const courseEndDate = new Date(result.end_date);
+
+        if (courseEndDate < currentDate) {
+            result.is_active = false;
+            await result.save();
+        }
+
 
         // send response
         res.status(200).json({

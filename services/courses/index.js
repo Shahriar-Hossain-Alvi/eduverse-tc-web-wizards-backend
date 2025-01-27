@@ -15,6 +15,10 @@ router.post("/", require("./controllers/create-course"));
 router.get("/", require("./controllers/get-course"));
 
 
+// get all course list => show all courses title to add in the prerequisite courses
+router.get("/allCourseTitle", verifyRole("admin"), require("./controllers/get-allCourseTitle"));
+
+
 // Get a course by id => show course details to all users
 router.get("/:id", require("./controllers/get-a-course"));
 
