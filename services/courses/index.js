@@ -7,8 +7,8 @@ const verifyRole = require("../../utils/middleware/role-verification/verifyRole.
 // Apply middleware globally for all remaining routes
 router.use(verifyToken)
 
-// create a course
-router.post("/", require("./controllers/create-course"));
+// create a course => used by admin and faculty to add new course
+router.post("/", verifyRole("admin", "faculty"), require("./controllers/create-course"));
 
 
 // get all course => show all courses to all users
@@ -16,7 +16,7 @@ router.get("/", require("./controllers/get-course"));
 
 
 // get all course list => show all courses title to add in the prerequisite courses
-router.get("/allCourseTitle", verifyRole("admin"), require("./controllers/get-allCourseTitle"));
+router.get("/allCourseTitle", verifyRole("admin", "faculty"), require("./controllers/get-allCourseTitle"));
 
 
 // Get a course by id => show course details to all users

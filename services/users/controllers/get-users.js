@@ -3,8 +3,12 @@ const User = require("../schema/user.schema");
 
 module.exports = async (req, res, next) => {
 
+	const { role } = req.query;
+
 	try {
-		const result = await User.find().select("-password_hashed -__v");
+		const filter = role && role !== "all" ? { user_role: role } : {}
+
+		const result = await User.find(filter).select("-password_hashed -__v");
 
 		res.status(201).json({
 			success: true,
