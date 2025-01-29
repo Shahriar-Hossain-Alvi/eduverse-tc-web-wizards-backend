@@ -5,9 +5,13 @@ const Course = require("../schema/course.schema");
 // get all courses
 module.exports = async (req, res, next) => {
 
+    const { search } = req.query;
+
     try {
+        const filter = search ? {title: {$regex: search, $options: "i"}} : {};
+
         // get all courses
-        const result = await Course.find().select("-__v");
+        const result = await Course.find(filter).select("-__v");
 
         // if course list is empty
         if(result.length === 0){
