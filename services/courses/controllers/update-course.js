@@ -11,7 +11,6 @@ module.exports = async (req, res, next) => {
 		body: { title, description, cover_url, total_available_seats, start_date, end_date, credits, assigned_faculty, prerequisites, is_active, },
 	} = req;
 
-
 	// check if the id is a valid mongodb id
 	if (!mongoose.Types.ObjectId.isValid(id)) {
 		return next(new ErrorResponse("Invalid user ID", 400));
@@ -60,7 +59,7 @@ module.exports = async (req, res, next) => {
 				}
 			}
 			// update assigned faculty if faculty is found in the users collection
-			updateData.assigned_faculty = assigned_faculty;
+			updateData.prerequisites = prerequisites;
 		}
 
 

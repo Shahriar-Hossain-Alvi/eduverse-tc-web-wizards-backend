@@ -27,7 +27,7 @@ router.get("/:id", require("./controllers/get-a-course"));
 router.delete("/:id", require("./controllers/delete-course"));
 
 
-// update a course by id
-router.patch("/:id", require("./controllers/update-course"));
+// update a course by id => admin and faculty can update course details
+router.patch("/:id", verifyRole("admin", "faculty"), require("./controllers/update-course"));
 
 module.exports = router;
