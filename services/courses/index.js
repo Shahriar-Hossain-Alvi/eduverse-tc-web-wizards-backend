@@ -23,8 +23,8 @@ router.get("/allCourseTitle", verifyRole("admin", "faculty"), require("./control
 router.get("/:id", require("./controllers/get-a-course"));
 
 
-// delete a course by id
-router.delete("/:id", require("./controllers/delete-course"));
+// delete a course by id => admin and faculty can delete  course 
+router.delete("/:id", verifyRole("admin", "faculty"), require("./controllers/delete-course"));
 
 
 // update a course by id => admin and faculty can update course details
