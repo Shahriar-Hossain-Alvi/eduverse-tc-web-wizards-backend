@@ -3,6 +3,8 @@ const ErrorResponse = require("../../../utils/middleware/error/error.response");
 const User = require("../../users/schema/user.schema");
 const Course = require("../../courses/schema/course.schema");
 const CourseFacultyAssignment = require("../schema/courseFacultyAssignment.schema");
+const logActivity = require("../../../utils/LogActivity/logActivity");
+
 
 // create a new course faculty assignment 
 module.exports = async (req, res, next) => {
@@ -41,17 +43,17 @@ module.exports = async (req, res, next) => {
 
 
         // check for exact course faculty assignments already exists
-        const isCourseFacultyAssignment = await CourseFacultyAssignment.findOne({
-            users_id: {
-                $size: users_id.length,
-                $all: users_id
-            }, // Exact match for array [1,2] and [2,1]
-            course_id,
-        });
+        // const isCourseFacultyAssignment = await CourseFacultyAssignment.findOne({
+        //     users_id: {
+        //         $size: users_id.length,
+        //         $all: users_id
+        //     }, // Exact match for array [1,2] and [2,1]
+        //     course_id,
+        // });
 
-        if (isCourseFacultyAssignment) {
-            return next(new ErrorResponse("An exact course-faculty assignment already exists!", 400));
-        }
+        // if (isCourseFacultyAssignment) {
+        //     return next(new ErrorResponse("An exact course-faculty assignment already exists!", 400));
+        // }
 
         // Create a new assignment
         const newCourseFacultyAssignment = new CourseFacultyAssignment({
@@ -59,6 +61,12 @@ module.exports = async (req, res, next) => {
             course_id,
         });
         await newCourseFacultyAssignment.save();
+
+
+        await logActivity(
+			`Faculty assigned to course: ${course_id}`,
+			`New faculty members added in Course: ${course_id}.`
+		)
 
         res.status(201).json({
             success: true,

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const ErrorResponse = require("../../../utils/middleware/error/error.response");
-const User = require("../../users/schema/user.schema");
 const Course = require("../schema/course.schema");
+const logActivity = require("../../../utils/LogActivity/logActivity");
 
 
 // update a course data
@@ -71,6 +71,11 @@ module.exports = async (req, res, next) => {
 
 		// If course not found
 		if (!result) return next(new ErrorResponse("No course found with the given ID", 404));
+
+		await logActivity(
+			`Course: ${result.title} updated`,
+			`${result.title} is updated successfully.`
+		)
 
 		// send response
 		res.status(200).json({

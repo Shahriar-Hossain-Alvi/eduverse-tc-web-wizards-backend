@@ -12,7 +12,7 @@ router.post("/", verifyRole("admin", "faculty"), require("./controllers/create-c
 
 
 // get all course => show all courses to all users
-router.get("/", require("./controllers/get-course"));
+router.get("/", require("./controllers/get-all-course"));
 
 
 // get all course list => show all courses title to add in the prerequisite courses
