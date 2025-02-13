@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const CourseStudentEnrollment = require('../../courseStudentEnrollment/schema/courseStudentEnrollment.schema');
 
 const courseSchema = new mongoose.Schema({
     title: { type: String, required: true },
@@ -25,12 +26,15 @@ const courseSchema = new mongoose.Schema({
 const Course = mongoose.model("Course", courseSchema);
 
 
-courseSchema.pre("save", (next)=>{
+courseSchema.pre("save", async(next)=>{
     const currentDate = new Date();
     const courseEndDate = new Date(this.end_date);
 
     if(courseEndDate < currentDate){
         this.is_active = false;
+
+        // make all enrollments as inactive
+        await CourseStudentEnrollment.updateMany({course_id: this._id}, {is_active: false});
     }
 
     next();
