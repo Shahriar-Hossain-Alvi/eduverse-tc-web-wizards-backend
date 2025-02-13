@@ -25,18 +25,26 @@ module.exports = async (req, res, next) => {
             return next(new ErrorResponse("Student (User) not found.", 404));
         }
 
-         // Check if the course exists in the database
-         const courseExists = await Course.findById(course_id);
-         if (!courseExists) {
-             return next(new ErrorResponse("Course not found.", 404));
-         }
+        // Check if the course exists in the database
+        const courseExists = await Course.findById(course_id);
+        if (!courseExists) {
+            return next(new ErrorResponse("Course not found.", 404));
+        }
+
+        // Ensure there are available seats
+        if (courseExists.total_available_seats <= 0) {
+            return next(new ErrorResponse("No available seats left for this course.", 400));
+        }
 
 
         // Check if the student is already enrolled in the course
         const existingEnrollment = await CourseStudentEnrollment.findOne({ users_id, course_id });
-        if (existingEnrollment) {
+
+
+        if (existingEnrollment && existingEnrollment.is_active) {
             return next(new ErrorResponse("The student is already enrolled in this course.", 400));
         }
+
 
         // Create a new course enrollment
         const newEnrollment = new CourseStudentEnrollment({
@@ -46,12 +54,15 @@ module.exports = async (req, res, next) => {
 
         await newEnrollment.save();
 
-        
+        // Update the total available seats for the course
+        courseExists.total_available_seats -= 1;
+        await courseExists.save();
+
 
         await logActivity(
-			`Student enrolled in a course`,
-			`Student ID: ${users_id} have enrolled in the course ID: ${course_id}.`
-		)
+            `Student enrolled in course: ${course_id}`,
+            `Student ID: ${users_id} have enrolled in the course ID: ${course_id}.`
+        )
 
         // Return success response
         res.status(201).json({

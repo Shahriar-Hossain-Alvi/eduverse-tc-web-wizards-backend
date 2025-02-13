@@ -6,7 +6,7 @@ const verifyRole = require("../../utils/middleware/role-verification/verifyRole.
 // Apply middleware globally for all remaining routes
 router.use(verifyToken)
 
-// create courseFacultyAssignment
+// create courseFacultyAssignment => used in course details to create courseFacultyAssignment data by admin while adding/updating new faculty
 router.post("/", verifyRole("admin"), require("./controllers/create-courseFacultyAssignment"));
 
 // get all courseFacultyAssignment

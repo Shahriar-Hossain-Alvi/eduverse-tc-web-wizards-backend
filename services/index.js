@@ -7,7 +7,7 @@ router.use("/users", require("./users"));
 //Courses Route
 router.use("/courses", require("./courses"));
 
-//CourseMaterials  Route
+//CourseMaterials Route
 router.use("/courseMaterials", require("./courseMaterials"));
 
 //CourseFacultyAssignments Route
