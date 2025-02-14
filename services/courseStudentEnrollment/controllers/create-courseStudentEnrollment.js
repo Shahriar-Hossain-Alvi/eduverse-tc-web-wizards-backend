@@ -42,7 +42,7 @@ module.exports = async (req, res, next) => {
 
 
         if (existingEnrollment && existingEnrollment.is_active) {
-            return next(new ErrorResponse("The student is already enrolled in this course.", 400));
+            return next(new ErrorResponse("You are already enrolled in this course.", 400));
         }
 
 
