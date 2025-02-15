@@ -6,7 +6,7 @@ const verifyRole = require("../../utils/middleware/role-verification/verifyRole.
 // Apply middleware globally for all remaining routes
 router.use(verifyToken)
 
-// create courseFacultyAssignment => used in course details to create courseFacultyAssignment data by admin while adding/updating new faculty
+// create courseFacultyAssignment => used in course details to create courseFacultyAssignment data by admin while adding/updating faculty so using PUT method
 router.post("/", verifyRole("admin"), require("./controllers/create-courseFacultyAssignment"));
 
 // get all courseFacultyAssignment
@@ -18,7 +18,7 @@ router.get("/:id", require("./controllers/get-a-courseFacultyAssignment"));
 // delete all courseFacultyAssignment
 router.delete("/:id", require("./controllers/delete-courseFacultyAssignment"));
 
-// update all courseFacultyAssignment
+// update a courseFacultyAssignment
 router.patch("/:id", require("./controllers/update-courseFacultyAssignment"));
 
 module.exports = router;

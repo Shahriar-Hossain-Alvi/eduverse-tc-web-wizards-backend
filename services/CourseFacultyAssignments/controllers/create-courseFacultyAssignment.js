@@ -21,7 +21,7 @@ module.exports = async (req, res, next) => {
     if (!Array.isArray(users_id) || !users_id.every(id => mongoose.Types.ObjectId.isValid(id))) {
         return next(new ErrorResponse("Invalid faculty user ID(s).", 400));
     }
-    
+
     if (!mongoose.Types.ObjectId.isValid(course_id)) {
         return next(new ErrorResponse("Invalid course ID", 400));
     }
@@ -43,35 +43,43 @@ module.exports = async (req, res, next) => {
 
 
         // check for exact course faculty assignments already exists
-        // const isCourseFacultyAssignment = await CourseFacultyAssignment.findOne({
-        //     users_id: {
-        //         $size: users_id.length,
-        //         $all: users_id
-        //     }, // Exact match for array [1,2] and [2,1]
-        //     course_id,
-        // });
+        const isCourseFacultyAssignmentExists = await CourseFacultyAssignment.findOne({ course_id });
 
-        // if (isCourseFacultyAssignment) {
-        //     return next(new ErrorResponse("An exact course-faculty assignment already exists!", 400));
-        // }
-
-        // Create a new assignment
-        const newCourseFacultyAssignment = new CourseFacultyAssignment({
-            users_id,
-            course_id,
-        });
-        await newCourseFacultyAssignment.save();
+        if (!isCourseFacultyAssignmentExists) {
+            // Create a new CourseFacultyAssignment
+            const newCourseFacultyAssignment = new CourseFacultyAssignment({
+                users_id,
+                course_id,
+            });
+            await newCourseFacultyAssignment.save();
 
 
-        await logActivity(
-			`Faculty assigned to course: ${course_id}`,
-			`New faculty members added in Course: ${course_id}.`
-		)
+            await logActivity(
+                `Faculty assigned to course: ${course_id}`,
+                `New faculty members added in Course: ${course_id}.`
+            );
 
-        res.status(201).json({
-            success: true,
-            message: "Course-Faculty assignment created successfully.",
-        });
+            res.status(201).json({
+                success: true,
+                message: "Course-Faculty assignment created successfully.",
+            });
+        } else {
+            // if a CourseFacultyAssignment found
+            isCourseFacultyAssignmentExists.users_id = users_id;
+            await isCourseFacultyAssignmentExists.save();
+
+            await logActivity(
+                `Faculty assignment updated for course: ${course_id}`,
+                `Updated faculty members added in Course: ${course_id}.`
+            );
+
+
+            res.status(201).json({
+                success: true,
+                message: "Faculty assignment updated successfully.",
+            });
+        }
+
     } catch (error) {
         // Send Error Response
         next(error);

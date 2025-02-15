@@ -4,12 +4,12 @@ const courseFacultyAssignmentSchema = new mongoose.Schema({
     users_id: {
         type: [mongoose.Schema.Types.ObjectId],
         ref: "User",
-        required: true
+        required: true,
     },
     course_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Course",
-        required: true
+        required: true,
     },
     is_active: { type: Boolean, default: true }
 }, { timestamps: true })
