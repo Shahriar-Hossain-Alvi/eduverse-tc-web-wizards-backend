@@ -12,6 +12,9 @@ router.post("/", verifyRole("admin"), require("./controllers/create-courseFacult
 // get all courseFacultyAssignment
 router.get("/", require("./controllers/get-courseFacultyAssignment"));
 
+// get a courseFacultyAssignment by faculty id
+router.get("/myAssignedCourses/:facultyId", verifyRole("faculty"), require("./controllers/get-courseFacultyAssignmentByFaculty"));
+
 // get a courseFacultyAssignment
 router.get("/:id", require("./controllers/get-a-courseFacultyAssignment"));
 
