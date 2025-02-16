@@ -7,8 +7,6 @@ const CourseFacultyAssignment = require("../schema/courseFacultyAssignment.schem
 module.exports = async (req, res, next) => {
     const { facultyId } = req.params;
 
-    console.log(facultyId);
-
     if (!facultyId) {
         return next(new ErrorResponse("Faculty(users id) is required", 400))
     }
@@ -20,7 +18,14 @@ module.exports = async (req, res, next) => {
 
     try {
         // check if the courseFacultyAssignment exists or not
-        const isCourseFacultyAssignmentExists = await CourseFacultyAssignment.find({ users_id: facultyId }).select("-__v").populate("users_id", "first_name last_name email").populate("course_id");
+        const isCourseFacultyAssignmentExists = await CourseFacultyAssignment.find({ users_id: facultyId }).select("-__v -updatedAt -createdAt").populate("users_id", "first_name last_name email").populate({
+            path: "course_id",
+            select: "-createdAt -description -updatedAt -__v -assigned_faculty",
+            populate: {
+                path: "prerequisites",
+                select: "title credits",
+            }
+        });
 
 
         // if courseFacultyAssignment is not found
