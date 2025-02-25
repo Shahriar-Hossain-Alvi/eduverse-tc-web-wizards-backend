@@ -18,14 +18,7 @@ module.exports = async (req, res, next) => {
 
     try {
         // check if the courseFacultyAssignment exists or not
-        const isCourseFacultyAssignmentExists = await CourseFacultyAssignment.find({ users_id: facultyId }).select("-__v -updatedAt -createdAt").populate("users_id", "first_name last_name email").populate({
-            path: "course_id",
-            select: "-createdAt -description -updatedAt -__v -assigned_faculty",
-            populate: {
-                path: "prerequisites",
-                select: "title credits",
-            }
-        });
+        const isCourseFacultyAssignmentExists = await CourseFacultyAssignment.find({ users_id: facultyId }).select("-__v -updatedAt -createdAt").populate("users_id", "first_name last_name").populate("course_id", "-createdAt -description -updatedAt -__v -assigned_faculty");
 
 
         // if courseFacultyAssignment is not found
