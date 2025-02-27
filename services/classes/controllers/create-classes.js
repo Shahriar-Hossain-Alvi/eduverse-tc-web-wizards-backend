@@ -62,8 +62,8 @@ module.exports = async (req, res, next) => {
         const result = await newClass.save();
 
         await logActivity(
-			`New class scheduled`,
-			`New class: ${title} for courseID: ${course_id}  is created by facultyID: ${faculty_id}`
+			`New class schedule created`,
+			`New class: ${title} for courseID: ${course_id}  is created`
 		)
 
         // Return success response
