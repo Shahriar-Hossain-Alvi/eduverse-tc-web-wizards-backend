@@ -24,7 +24,7 @@ router.get("/:id", require("./controllers/get-a-classes"));
 
 
 // delete a class
-router.delete("/:id", require("./controllers/delete-classes"));
+router.delete("/:id", verifyRole("admin", "faculty"),require("./controllers/delete-a-class"));
 
 // update a class
 router.patch("/:id", require("./controllers/update-classes"));

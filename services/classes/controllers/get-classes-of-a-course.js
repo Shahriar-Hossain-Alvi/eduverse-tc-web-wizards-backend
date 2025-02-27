@@ -7,7 +7,6 @@ const Course = require("../../courses/schema/course.schema");
 // get all classes for an assigned course
 module.exports = async (req, res, next) => {
     const { course_id } = req.params;
-    console.log(course_id);
 
     if (!course_id) {
         return next(new ErrorResponse("course_id is required", 400));
@@ -27,7 +26,7 @@ module.exports = async (req, res, next) => {
             return next(new ErrorResponse(`There are no course found with this ID: ${course_id}`, 404))
         }
 
-        const result = await Class.find({course_id})
+        const result = await Class.find({course_id}).select("-__v -createdAt -updatedAt").sort({scheduled_time: 1})
 
         // send response
         res.status(200).json({
