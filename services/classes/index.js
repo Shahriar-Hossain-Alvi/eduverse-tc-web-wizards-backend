@@ -26,7 +26,7 @@ router.get("/:id", require("./controllers/get-a-classes"));
 // delete a class
 router.delete("/:id", verifyRole("admin", "faculty"),require("./controllers/delete-a-class"));
 
-// update a class
-router.patch("/:id", require("./controllers/update-classes"));
+// update a class => used by faculty to update class schedule data
+router.patch("/:id",verifyRole("admin", "faculty"), require("./controllers/update-classes"));
 
 module.exports = router;

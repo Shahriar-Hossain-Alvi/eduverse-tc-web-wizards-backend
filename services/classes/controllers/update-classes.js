@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Class = require("../schema/classes.schema");
 const ErrorResponse = require("../../../utils/middleware/error/error.response");
+const logActivity = require("../../../utils/LogActivity/logActivity");
 
 module.exports = async (req, res, next) => {
     const {
@@ -57,10 +58,16 @@ module.exports = async (req, res, next) => {
         // Perform the update
         const updatedClass = await Class.findByIdAndUpdate(id, updates, { new: true, runValidators: true });
 
+
+        await logActivity(
+			`Class schedule of ${updatedClass.title} updated`,
+			`New class: ${updatedClass.title} for courseID: ${course_id}  is created`
+		)
+
         // Send success response
         res.status(200).json({
             success: true,
-            message: `Class with ID: ${updatedClass._id} updated successfully.`,
+            message: `Class schedule of ${updatedClass.title} updated successfully.`,
         });
     } catch (error) {
         // Handle unexpected errors
