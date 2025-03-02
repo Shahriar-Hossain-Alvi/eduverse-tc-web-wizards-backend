@@ -48,14 +48,17 @@ module.exports = async (req, res, next) => {
 
         // check if the student has enrolled in the prerequisite courses
         const prerequisiteCourses = courseExists.prerequisites;
-        if(prerequisiteCourses.length > 0) {
+
+
+        if (prerequisiteCourses.length > 0) {
             const isEnrolledInPrerequisiteCourses = await CourseStudentEnrollment.find({
                 users_id,
-                course_id: { $in: prerequisiteCourses.map(course => course.course_id) }
+                course_id: { $in: prerequisiteCourses }
             });
 
+
             // if user is not enrolled in all the prerequisite courses
-            if(isEnrolledInPrerequisiteCourses.length !== prerequisiteCourses.length) {
+            if (isEnrolledInPrerequisiteCourses.length !== prerequisiteCourses.length) {
                 return next(new ErrorResponse("You are not enrolled in all the prerequisite courses.", 400));
             }
         }
