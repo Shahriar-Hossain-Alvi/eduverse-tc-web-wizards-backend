@@ -64,6 +64,16 @@ module.exports = async (req, res, next) => {
         }
 
 
+        // if user tries to enroll in more than 3 courses at a time
+        const activeEnrolledCourses = await CourseStudentEnrollment.countDocuments({
+            users_id,
+            is_active: true
+        });
+
+        if (activeEnrolledCourses.length >= 3) {
+            return next(new ErrorResponse("You can not enroll in more than 3 active courses.", 400));
+        }
+
         // Create a new course enrollment
         const newEnrollment = new CourseStudentEnrollment({
             users_id,
