@@ -14,6 +14,12 @@ router.post("/", verifyRole("admin", "faculty"), require("./controllers/create-c
 router.get("/", require("./controllers/get-courseMaterial"));
 
 
+
+// get single course material by course id => every user can access this route
+router.get("/getMaterialByCourseId/:course_id",  require("./controllers/get-a-courseMaterialByCourseId"));
+
+
+
 // get single course material
 router.get("/:id", require("./controllers/get-a-courseMaterial"));
 
