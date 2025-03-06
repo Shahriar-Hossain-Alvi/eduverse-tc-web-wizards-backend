@@ -61,7 +61,7 @@ module.exports = async (req, res, next) => {
         // Return success response
         res.status(201).json({
             success: true,
-            message: "Course material created successfully.",
+            message: "New course material added successfully.",
         });
     } catch (error) {
         next(error);

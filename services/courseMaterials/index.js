@@ -1,12 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const verifyToken = require("../../utils/middleware/token-verification/auth.middleware")
+const verifyToken = require("../../utils/middleware/token-verification/auth.middleware");
+const verifyRole = require("../../utils/middleware/role-verification/verifyRole.middleware")
 
 // Apply middleware globally for all remaining routes
 router.use(verifyToken)
 
 // crate new course material
-router.post("/", require("./controllers/create-courseMaterial"));
+router.post("/", verifyRole("admin", "faculty"), require("./controllers/create-courseMaterial"));
 
 
 // get all course material
@@ -14,7 +15,7 @@ router.get("/", require("./controllers/get-courseMaterial"));
 
 
 // get single course material
-router.get("/:id",  require("./controllers/get-a-courseMaterial"));
+router.get("/:id", require("./controllers/get-a-courseMaterial"));
 
 
 // delete a course material
