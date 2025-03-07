@@ -34,4 +34,9 @@ router.use("/classAttendance", require("./classAttendance"));
 // admin quick overview
 router.use("/adminQuickOverview", require("./adminPanel"))
 
+
+// deleted materials route
+router.use("/deletedMaterials", require("./deletedMaterials"))
+
+
 module.exports = router;

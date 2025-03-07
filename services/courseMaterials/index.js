@@ -19,13 +19,12 @@ router.get("/", require("./controllers/get-courseMaterial"));
 router.get("/getMaterialByCourseId/:course_id",  require("./controllers/get-a-courseMaterialByCourseId"));
 
 
-
 // get single course material
 router.get("/:id", require("./controllers/get-a-courseMaterial"));
 
 
-// delete a course material
-router.delete("/:id", require("./controllers/delete-courseMaterial.js"))
+// delete a course material => admin and faculty can delete course material
+router.delete("/:id", verifyRole("admin", "faculty") ,require("./controllers/delete-courseMaterial.js"))
 
 
 // update a course material

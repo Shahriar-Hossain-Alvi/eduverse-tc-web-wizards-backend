@@ -22,7 +22,6 @@ module.exports = async (req, res, next) => {
 
         // Fetch the specific course material by course_id ID
         const courseMaterial = await CourseMaterial.find({course_id: course_id}).select("-__v -createdAt -updatedAt").populate("created_by", "first_name last_name");
-        console.log(courseMaterial);
 
         // If no material is found
         if (!courseMaterial) {
