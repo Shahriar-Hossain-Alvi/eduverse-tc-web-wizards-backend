@@ -16,7 +16,7 @@ router.get("/", require("./controllers/get-courseMaterial"));
 
 
 // get single course material by course id => every user can access this route
-router.get("/getMaterialByCourseId/:course_id",  require("./controllers/get-a-courseMaterialByCourseId"));
+router.get("/getMaterialByCourseId/:course_id", require("./controllers/get-a-courseMaterialByCourseId"));
 
 
 // get single course material
@@ -24,11 +24,11 @@ router.get("/:id", require("./controllers/get-a-courseMaterial"));
 
 
 // delete a course material => admin and faculty can delete course material
-router.delete("/:id", verifyRole("admin", "faculty") ,require("./controllers/delete-courseMaterial.js"))
+router.delete("/:id", verifyRole("admin", "faculty"), require("./controllers/delete-courseMaterial.js"))
 
 
-// update a course material
-router.patch("/:id", require("./controllers/update-courseMaterial.js"))
+// update a course material => update course material from assigned course page(faculty)
+router.patch("/:id", verifyRole("admin", "faculty"), require("./controllers/update-courseMaterial.js"))
 
 
 
