@@ -13,11 +13,11 @@ const classSchema = new mongoose.Schema({
         ref: "User",
         required: true
     },
-
     scheduled_time: {
         type: Date,
         required: true
     },
+    location: { type: String, default: "" },
     is_active: { type: Boolean, default: true },
 
 

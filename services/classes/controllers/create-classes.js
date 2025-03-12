@@ -8,7 +8,7 @@ const logActivity = require("../../../utils/LogActivity/logActivity");
 
 module.exports = async (req, res, next) => {
 
-    const { title, description, course_id, faculty_id, scheduled_time } = req.body;
+    const { title, description, course_id, faculty_id, scheduled_time, location } = req.body;
 
     // Check all required fields
     if (!title || !description || !course_id || !faculty_id || !scheduled_time) {
@@ -55,7 +55,7 @@ module.exports = async (req, res, next) => {
 
         // Create a new class
         const newClass = new Class({
-            title, description, course_id, faculty_id, scheduled_time,
+            title, description, course_id, faculty_id, scheduled_time, location
         });
 
         // Save the class to the database

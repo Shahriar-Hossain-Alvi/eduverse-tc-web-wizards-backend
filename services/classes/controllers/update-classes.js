@@ -6,7 +6,7 @@ const logActivity = require("../../../utils/LogActivity/logActivity");
 module.exports = async (req, res, next) => {
     const {
         params: { id },
-        body: { title, description, course_id, faculty_id, scheduled_time, is_active }
+        body: { title, description, course_id, faculty_id, scheduled_time, is_active, location }
     } = req;
 
     // Validate the class ID
@@ -54,6 +54,7 @@ module.exports = async (req, res, next) => {
         if (faculty_id) updates.faculty_id = faculty_id;
         if (scheduled_time) updates.scheduled_time = scheduled_time;
         if (is_active !== undefined) updates.is_active = is_active;
+        if(location) updates.location = location;
 
         // Perform the update
         const updatedClass = await Class.findByIdAndUpdate(id, updates, { new: true, runValidators: true });
