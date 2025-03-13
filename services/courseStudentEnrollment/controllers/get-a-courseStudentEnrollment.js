@@ -13,9 +13,11 @@ module.exports = async (req, res, next) => {
 
     try {
         // Fetch the single course student enrollment by ID and populate the user and course details
-        const enrollment = await CourseStudentEnrollment.findById(id)
-            .populate("users_id", "first_name last_name email") // Populate the user's first name, last name and email
-            .populate("course_id", "title description"); // Populate the course title and description
+        const enrollment = await CourseStudentEnrollment.findById(id).select("-__v -updatedAt -createdAt -prerequisites -users_id")
+            .populate({
+                path: "course_id" , 
+                select: "title description credits start_date end_date",
+            });
 
         // If no enrollment is found
         if (!enrollment) {
