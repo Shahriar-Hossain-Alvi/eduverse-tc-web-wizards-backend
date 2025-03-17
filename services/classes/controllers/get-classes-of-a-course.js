@@ -26,7 +26,7 @@ module.exports = async (req, res, next) => {
             return next(new ErrorResponse(`There are no course found with this ID: ${course_id}`, 404))
         }
 
-        const result = await Class.find({course_id}).select("-__v -createdAt -updatedAt").sort({scheduled_time: 1})
+        const result = await Class.find({course_id}).select("-__v -createdAt -updatedAt").populate("faculty_id", "first_name last_name email").sort({scheduled_time: 1})
 
         // send response
         res.status(200).json({

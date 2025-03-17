@@ -9,6 +9,7 @@ module.exports = async (req, res, next) => {
         params: { id },
     } = req;
 
+
     if (!id) {
         return next(new ErrorResponse("id is required", 400));
     }
@@ -30,7 +31,7 @@ module.exports = async (req, res, next) => {
         // send response
         res.status(200).json({
             success: true,
-            message: "Class fetched successfully",
+            message: "Class data fetched successfully",
             data: result
         });
 

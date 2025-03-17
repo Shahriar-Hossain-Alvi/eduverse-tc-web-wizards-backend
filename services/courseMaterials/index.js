@@ -16,7 +16,7 @@ router.get("/", require("./controllers/get-courseMaterial"));
 
 
 // get single course material by course id => every user can access this route
-router.get("/getMaterialByCourseId/:course_id", require("./controllers/get-a-courseMaterialByCourseId"));
+router.get("/getMaterialByCourseId/:course_id", verifyRole("admin", "faculty", "student"),require("./controllers/get-a-courseMaterialByCourseId"));
 
 
 // get single course material

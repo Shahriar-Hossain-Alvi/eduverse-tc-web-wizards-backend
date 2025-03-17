@@ -20,7 +20,7 @@ module.exports = async (req, res, next) => {
         // check if the courseFacultyAssignment exists or not
         const result = await CourseFacultyAssignment.findById(id).select("-__v -createdAt -updatedAt")
         .populate("users_id", "first_name last_name email")
-        .populate("course_id", "title description");
+        .populate("course_id", "title description start_date end_date credits");
 
         
         // if courseFacultyAssignment is not found

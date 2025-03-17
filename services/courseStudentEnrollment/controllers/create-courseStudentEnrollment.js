@@ -70,7 +70,8 @@ module.exports = async (req, res, next) => {
             is_active: true
         });
 
-        if (activeEnrolledCourses.length >= 3) {
+
+        if (activeEnrolledCourses >= 3) {
             return next(new ErrorResponse("You can not enroll in more than 3 active courses.", 400));
         }
 
