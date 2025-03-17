@@ -15,12 +15,12 @@ router.post("/", verifyRole("admin", "faculty"), require("./controllers/create-c
 router.get("/", require("./controllers/get-classes"));
 
 
+// get all classes of a course by course id => every one can access
+router.get("/courseId/:course_id", verifyRole("admin", "faculty", "student"), require("./controllers/get-classes-of-a-course"));
+
+
 // get a class by class id
 router.get("/:id", verifyRole("admin", "faculty", "student"), require("./controllers/get-a-class"));
-
-
-// get all classes of a course by course id => every one can access
-router.get("/:course_id", verifyRole("admin", "faculty", "student"), require("./controllers/get-classes-of-a-course"));
 
 
 // delete a class

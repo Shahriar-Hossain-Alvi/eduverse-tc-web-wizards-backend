@@ -21,7 +21,7 @@ module.exports = async (req, res, next) => {
 
     try {
         // check if the course exists or not
-        const result = await Class.findById(id);
+        const result = await Class.findById(id).select("-__v -updatedAt -createdAt");
 
         // if course is not found
         if (!result) {
