@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const verifyToken = require("../../utils/middleware/token-verification/auth.middleware")
+const verifyToken = require("../../utils/middleware/token-verification/auth.middleware");
+const verifyRole = require("../../utils/middleware/role-verification/verifyRole.middleware");
 
 // Apply middleware globally for all remaining routes
 router.use(verifyToken)
@@ -11,8 +12,13 @@ router.post("/", require("./controllers/create-classMaterial"));
 // get all class materials
 router.get("/", require("./controllers/get-all-classMaterials"));
 
-// get a class material
-router.get("/:id", require("./controllers/get-a-classMaterials"));
+
+// get a class material by class_id
+router.get("/getMaterialsByClassId/:class_id", verifyRole("admin", "student", "faculty"), require("./controllers/get-a-classMaterialByClassId"));
+
+
+// get a class material by  id
+router.get("/:id", verifyRole("admin", "student", "faculty"), require("./controllers/get-a-classMaterials"));
 
 
 // delete class material
