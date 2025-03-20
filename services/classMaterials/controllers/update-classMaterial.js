@@ -3,22 +3,20 @@ const ClassMaterial = require('../schema/classMaterials.schema');
 const Class = require("../../classes/schema/classes.schema");
 const User = require("../../users/schema/user.schema");
 const ErrorResponse = require("../../../utils/middleware/error/error.response");
+const DeletedMaterial = require("../../deletedMaterials/schema/deletedMaterials.schema");
+const logActivity = require("../../../utils/LogActivity/logActivity");
+
 
 module.exports = async (req, res, next) => {
-    const {
-        params: { id },
-        body: { title, description, class_id, material_url, is_active, created_by }
-    } = req;
+    const { id } = req.params;
+    const { title, description, material_url, is_active, created_by } = req.body;
 
     // Validate MongoDB ObjectId
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return next(new ErrorResponse("Invalid Class Material ID.", 400));
     }
 
-    // Validate class_id and created_by if provided
-    if (class_id && !mongoose.Types.ObjectId.isValid(class_id)) {
-        return next(new ErrorResponse("Invalid Class ID.", 400));
-    }
+    // Validate creator (user) ID
     if (created_by && !mongoose.Types.ObjectId.isValid(created_by)) {
         return next(new ErrorResponse("Invalid Creator (User) ID.", 400));
     }
@@ -30,37 +28,67 @@ module.exports = async (req, res, next) => {
             return next(new ErrorResponse("Class material not found.", 404));
         }
 
-        // Check if class_id exists
-        if (class_id) {
-            const isClassExists = await Class.findById(class_id);
-            if (!isClassExists) {
-                return next(new ErrorResponse("Class not found.", 404));
-            }
-        }
+        // create a update data object
+        const updateData = {};
 
-        // Check if created_by exists
-        if (created_by) {
-            const isUserExists = await User.findById(created_by);
-            if (!isUserExists) {
-                return next(new ErrorResponse("Creator (User) not found.", 404));
-            }
-        }
+        const oldMaterialUrl = material.material_url;
 
         // Update fields only if provided
-        if (title) material.title = title;
-        if (description) material.description = description;
-        if (class_id) material.class_id = class_id;
-        if (material_url) material.material_url = material_url;
-        if (is_active !== undefined) material.is_active = is_active; // Allows explicit false
-        if (created_by) material.created_by = created_by;
+        if (title && (material.title !== title)) {
+            updateData.title = title;
+            console.log("Title is changing...");
+        }
+
+        if (description && (material.description !== description)) {
+            updateData.description = description;
+            console.log("Description is changing...");
+        };
+
+        if (material_url && material_url !== oldMaterialUrl) {
+            updateData.material_url = material_url;
+
+            // Create a new deleted material
+            const deletedMaterial = new DeletedMaterial({
+                material_title: material.title,
+                material_url: oldMaterialUrl,
+            });
+
+            // Save the deleted material
+            await deletedMaterial.save();
+        }
+
+
+        if (is_active !== undefined) {
+            updateData.is_active = is_active; // Allows explicit false
+            console.log("Is Active is changing...");
+        }
+
+        if (created_by && (material.created_by !== created_by)) {
+            updateData.created_by = created_by;
+            console.log("Created By is changing");
+        };
+
+        if (Object.keys(updateData).length === 0) {
+            return next(new ErrorResponse("No changes detected.", 400));
+        }
 
         // Save updated material
-        const updatedMaterial = await material.save();
+        const result = await ClassMaterial.findByIdAndUpdate(id, updateData, {
+            new: true, // Returns the updated document instead of the old one
+            runValidators: true, // Runs schema validation after updating fields
+        });
+
+
+        // log activity
+        await logActivity(
+            `Course Material: ${result.title} updated`,
+            `${result._id} is updated successfully.`
+        )
 
         // Send success response
         res.status(200).json({
             success: true,
-            message: `Class material for title: ${updatedMaterial.title} updated successfully.`,
+            message: `Class material for title: ${result.title} updated successfully.`,
         });
     } catch (error) {
         // Handle any unexpected errors

@@ -7,7 +7,7 @@ const verifyRole = require("../../utils/middleware/role-verification/verifyRole.
 router.use(verifyToken)
 
 // create class materials
-router.post("/", require("./controllers/create-classMaterial"));
+router.post("/", verifyRole("admin", "faculty"), require("./controllers/create-classMaterial"));
 
 // get all class materials
 router.get("/", require("./controllers/get-all-classMaterials"));
@@ -22,7 +22,7 @@ router.get("/:id", verifyRole("admin", "student", "faculty"), require("./control
 
 
 // delete class material
-router.delete("/:id", require("./controllers/delete-classMaterial"))
+router.delete("/:id", verifyRole("admin", "faculty"), require("./controllers/delete-classMaterial"))
 
 
 // update class materials
