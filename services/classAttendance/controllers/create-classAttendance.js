@@ -26,27 +26,22 @@ module.exports = async (req, res, next) => {
 
     try {
         // Validate each attendance record
-        attendance_record.forEach(({ student_id, is_present }) => {
+        for (const { student_id, is_present } of attendance_record) {
             if (!mongoose.Types.ObjectId.isValid(student_id)) {
-                throw new ErrorResponse(`Invalid Student ID: ${student_id}`, 400);
+                return next(new ErrorResponse(`Invalid Student ID: ${student_id}`, 400));
             }
-            if (!["present", "absent", "early leave"].includes(is_present)) {
-                throw new ErrorResponse(`Invalid status: ${is_present}`, 400);
+            if (!["present", "absent", "early leave", "late"].includes(is_present)) {
+                return next(new ErrorResponse(`Invalid status: ${is_present}`, 400));
             }
-        });
+        }
+
+
 
         // Check if an attendance record for this class and date already exists
         const existingAttendance = await ClassAttendance.findOne({ class_id, attendance_date });
 
-        if (existingAttendance) {
-            // Update the existing attendance record
-            existingAttendance.attendance_record.push(...attendance_record);
-            await existingAttendance.save();
-            return res.status(200).json({
-                success: true,
-                message: `Attendance records updated successfully for class: ${class_id} on ${attendance_date}.`,
-            });
-        }
+        if(existingAttendance)
+            return next(new ErrorResponse(`Attendance Record for this class already exists`, 400));
 
         // Create a new attendance record
         const newAttendance = new ClassAttendance({
@@ -59,13 +54,13 @@ module.exports = async (req, res, next) => {
         await newAttendance.save();
 
         await logActivity(
-			`Class attendance uploaded`,
-			`Attendance for classID: ${class_id} was uploaded by facultyID: ${created_by}`
-		)
+            `A new Class attendance uploaded`,
+            `Attendance for classID: ${class_id} was uploaded by facultyID: ${created_by}`
+        )
 
         res.status(201).json({
             success: true,
-            message: `Attendance records created successfully for class: ${class_id} on ${attendance_date}.`,
+            message: `Attendance records created successfully..`,
         });
     } catch (error) {
         next(error);

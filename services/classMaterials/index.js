@@ -26,7 +26,7 @@ router.delete("/:id", verifyRole("admin", "faculty"), require("./controllers/del
 
 
 // update class materials
-router.patch("/:id", require("./controllers/update-classMaterial"));
+router.patch("/:id", verifyRole("faculty", "admin"), require("./controllers/update-classMaterial"));
 
 module.exports = router;
 

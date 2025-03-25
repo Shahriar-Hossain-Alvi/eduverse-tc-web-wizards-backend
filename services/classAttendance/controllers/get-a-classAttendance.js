@@ -26,9 +26,8 @@ module.exports = async (req, res, next) => {
 
         // Fetch attendance records
         const attendanceRecords = await ClassAttendance.find(query)
-            .populate("class_id", "title")
             .populate("created_by", "first_name last_name email")
-            .populate("attendance_record.student_id", "first_name last_name email")
+            .populate("attendance_record")
             .select("-__v -updatedAt");
 
         // If no records are found, return an empty array with success = true

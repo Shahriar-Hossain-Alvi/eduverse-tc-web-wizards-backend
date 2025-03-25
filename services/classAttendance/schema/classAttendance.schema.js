@@ -25,7 +25,7 @@ const classAttendanceSchema = new mongoose.Schema({
             },
             is_present: {
                 type: String,
-                enum: ["present", "absent", "early leave"],
+                enum: ["present", "absent", "early leave", "late"],
                 required: true
             },
             remarks: {
@@ -34,11 +34,12 @@ const classAttendanceSchema = new mongoose.Schema({
             },
         }
     ]
-}, { timestamp: true })
+}, { timestamps: true })
 
 
 // Prevent duplicate attendance entries for the same student in the same class on the same date
-// classAttendanceSchema.index({ class_id: 1, student: 1, date: 1 }, { unique: true });
+classAttendanceSchema.index({ class_id: 1, "attendance_record.student_id": 1, attendance_date: 1 }, { unique: true });
+
 
 
 const ClassAttendance = mongoose.model("ClassAttendance", classAttendanceSchema);
