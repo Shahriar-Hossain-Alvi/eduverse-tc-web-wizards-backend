@@ -25,10 +25,10 @@ module.exports = async (req, res, next) => {
         }
 
         // Fetch attendance records
-        const attendanceRecords = await ClassAttendance.find(query)
+        const attendanceRecords = await ClassAttendance.findOne(query)
             .populate("created_by", "first_name last_name email")
-            .populate("attendance_record")
-            .select("-__v -updatedAt");
+            .populate("attendance_record.student_id", "first_name last_name")
+            .select("-__v -updatedAt -createdAt -class_id");
 
         // If no records are found, return an empty array with success = true
         if (!attendanceRecords || attendanceRecords.length === 0) {

@@ -17,11 +17,11 @@ router.get("/", require("./controllers/get-all-classAttendance"));
 
 
 // delete class attendance
-router.delete("/:id", require("./controllers/delete-classAttendance"));
+router.delete("/:id", verifyRole("admin", "faculty"), require("./controllers/delete-classAttendance"));
 
 
 // update a class Attendance
-router.patch("/:id", require("./controllers/update-classAttendance"));
+router.patch("/:id", verifyRole("admin", "faculty"), require("./controllers/update-classAttendance"));
 
 
 // get class attendance for a specific class
