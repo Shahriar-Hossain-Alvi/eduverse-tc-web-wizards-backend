@@ -31,8 +31,9 @@ router.use("/classMaterials", require("./classMaterials"))
 router.use("/classAttendance", require("./classAttendance"));
 
 
-// admin quick overview
-router.use("/adminQuickOverview", require("./adminPanel"))
+//  quick overview
+router.use("/quickOverview", require("./quickOverview"));
+
 
 
 // deleted materials route
