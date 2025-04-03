@@ -22,6 +22,9 @@ router.get("/courseId/:course_id", verifyRole("admin", "faculty", "student"), re
 // get a class by class id
 router.get("/:id", verifyRole("admin", "faculty", "student"), require("./controllers/get-a-class"));
 
+// get all classes for a faculty
+router.get("/allAssignedClasses/:id", verifyRole("faculty"), require("./controllers/get-all-assignedClassesByFacultyId"));
+
 
 // delete a class
 router.delete("/:id", verifyRole("admin", "faculty"),require("./controllers/delete-a-class"));
