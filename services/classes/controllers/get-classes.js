@@ -6,21 +6,36 @@ const Class = require("../schema/classes.schema");
 // get all class
 module.exports = async (req, res, next) => {
 
+    const now = new Date();
     try {
-        // get all classes
-        const result = await Class.find().populate("faculty_id").select("-createdAt -updatedAt -__v");
+        // Fetch upcoming classes (today & future) - sorted in ascending order
+        const upcomingClasses = await Class.find({
+            scheduled_time: { $gte: now }
+        }).sort({ scheduled_time: 1 }) // Ascending order (earliest first)
+            .select("-__v -updatedAt -createdAt").populate({
+                path: "faculty_id",
+                select: "first_name last_name"
+            });;
 
-        // if class list is empty
-        if(!result){
-            return new ErrorResponse("There are no classes available", 404)
-        }
+        // fetch past classes
+        const pastClasses = await Class.find({
+            scheduled_time: { $lt: now }
+        }).select("-__v -updatedAt -createdAt").populate({
+            path: "faculty_id",
+            select: "first_name last_name"
+        });
+
+
+        // combine classes
+        const result = [...upcomingClasses, ...pastClasses]
+
 
         // send response
         res.status(200).json({
-			success: true,
-			message: "Data fetched successfully",
+            success: true,
+            message: "Data fetched successfully",
             data: result
-		});
+        });
 
     } catch (error) {
         //send error response

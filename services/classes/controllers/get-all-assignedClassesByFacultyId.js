@@ -18,19 +18,29 @@ module.exports = async (req, res, next) => {
 
     const now = new Date();
     try {
+        // Fetch upcoming classes (today & future) - sorted in ascending order
+        const upcomingClasses = await Class.find({
+            faculty_id: { $in: [new mongoose.Types.ObjectId(id)] },
+            scheduled_time: { $gte: now }
+        }).sort({ scheduled_time: 1 }) // Ascending order (earliest first)
+        .select("-__v -updatedAt -createdAt").populate({
+            path: "faculty_id",
+            select: "first_name last_name"
+        });;
 
-        // check if the course exists or not
-        const result = await Class.find({
-            faculty_id: { $in: [new mongoose.Types.ObjectId(id)] }
+        // fetch past classes
+        const pastClasses = await Class.find({
+            faculty_id: { $in: [new mongoose.Types.ObjectId(id)] },
+            scheduled_time: { $lt: now }
         }).select("-__v -updatedAt -createdAt").populate({
             path: "faculty_id",
             select: "first_name last_name"
         });
 
-        // if course is not found
-        if (!result) {
-            return next(new ErrorResponse(`There are no class found with this ID: ${id}`, 404))
-        }
+
+        // combine upcoming and past classes
+        const result = [...upcomingClasses, ...pastClasses]
+
 
         // send response
         res.status(200).json({
