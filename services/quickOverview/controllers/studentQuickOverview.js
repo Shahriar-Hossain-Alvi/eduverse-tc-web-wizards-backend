@@ -11,29 +11,31 @@ module.exports = async (req, res, next) => {
     try {
         // get total enrolled courses
         const total_Enrolled_courses = await CourseStudentEnrollment.countDocuments({
-            users_id: { $in: [new mongoose.Types.ObjectId(id)] }
+            users_id: new mongoose.Types.ObjectId(id)
         });
 
 
 
         // get recently enrolled course
-        const get_Latest_Enrolled_Course = await CourseStudentEnrollment.find({
-            users_id: {
-                $in: [new mongoose.Types.ObjectId(id)]
-            }
+        const get_Latest_Enrolled_Course = await CourseStudentEnrollment.findOne({
+            users_id: new mongoose.Types.ObjectId(id)
         }).sort({ createdAt: -1 })  // Sort by newest first
-            .limit(1).select("course_id");
+            .select("course_id");
 
-        const get_Latest_Enrolled_Course_Data = await Course.findById(get_Latest_Enrolled_Course[0].course_id).select("title start_date -_id")
+        let latest_Enrolled_Courses = {};
 
-        const latest_Enrolled_Courses = {
-            latest_Enrolled_Course_Id: get_Latest_Enrolled_Course[0]._id,
+        if (get_Latest_Enrolled_Course) {
+            const get_Latest_Enrolled_Course_Data = await Course.findById(get_Latest_Enrolled_Course.course_id).select("title start_date -_id")
 
-            latest_Enrolled_Course_title:
-                get_Latest_Enrolled_Course_Data.title,
+            latest_Enrolled_Courses = get_Latest_Enrolled_Course_Data ? {
+                latest_Enrolled_Course_Id: get_Latest_Enrolled_Course._id,
 
-            latest_Enrolled_start_date:
-                get_Latest_Enrolled_Course_Data.start_date,
+                latest_Enrolled_Course_title:
+                    get_Latest_Enrolled_Course_Data.title,
+
+                latest_Enrolled_start_date:
+                    get_Latest_Enrolled_Course_Data.start_date,
+            } : {}
         }
 
 
@@ -48,10 +50,12 @@ module.exports = async (req, res, next) => {
         const courseIds = enrolledCourses.map(enrollment => enrollment.course_id)
 
         // get upcoming classes 
-        const upcoming_classes = await Class.find({
+        const upcoming_classes = courseIds.length ? await Class.find({
             course_id: { $in: courseIds },
             scheduled_time: { $gte: now }
-        }).sort({scheduled_time: 1}).limit(2).select("_id scheduled_time title")
+        }).sort({ scheduled_time: 1 })
+        .limit(2)
+        .select("_id scheduled_time title") : []
 
 
         const quickOverview = {
