@@ -8,10 +8,10 @@ module.exports = async (req, res, next) => {
 
     try {
         // get all classes
-        const result = await Class.find();
+        const result = await Class.find().populate("faculty_id").select("-createdAt -updatedAt -__v");
 
         // if class list is empty
-        if(result.length === 0){
+        if(!result){
             return new ErrorResponse("There are no classes available", 404)
         }
 

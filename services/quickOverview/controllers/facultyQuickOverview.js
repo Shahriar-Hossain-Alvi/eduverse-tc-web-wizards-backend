@@ -9,10 +9,12 @@ module.exports = async (req, res, next) => {
     const { id } = req?.params; // faculty id
 
     try {
+
         // get total courses teaching
         const total_courses_teaching = await CourseFacultyAssignment.countDocuments({
             users_id: { $in: [new mongoose.Types.ObjectId(id)] }
         });
+
 
 
         // get total enrolled students for this faculty's assigned courses
@@ -44,27 +46,36 @@ module.exports = async (req, res, next) => {
             }
         ]);
 
+        const total_enrolled_students_for_this_faculty = enrolled_students_for_this_faculty.length > 0 ? enrolled_students_for_this_faculty[0].total_students : 0;
+
+
 
 
         // get recently assigned course
-        const get_Latest_Assigned_Course = await CourseFacultyAssignment.find({
+        const get_Latest_Assigned_Course = await CourseFacultyAssignment.findOne({
             users_id: {
                 $in: [new mongoose.Types.ObjectId(id)]
             }
         }).sort({ createdAt: -1 })  // Sort by newest first
-            .limit(1).select("course_id");
+            .select("course_id");
 
-        const get_Latest_Assigned_Course_Data = await Course.findById(get_Latest_Assigned_Course[0].course_id).select("title start_date -_id")
+        let latest_Assigned_Course = {};
 
-        const latest_Assigned_Course = {
-            latest_Assigned_Course_Id: get_Latest_Assigned_Course[0]._id,
+        if (get_Latest_Assigned_Course) {
+            const get_Latest_Assigned_Course_Data = await Course.findById(get_Latest_Assigned_Course.course_id).select("title start_date -_id");
 
-            latest_Assigned_Course_title:
-                get_Latest_Assigned_Course_Data.title,
 
-            latest_Assigned_Course_start_date:
-                get_Latest_Assigned_Course_Data.start_date,
+            latest_Assigned_Course = get_Latest_Assigned_Course_Data ? {
+                latest_Assigned_Course_Id: get_Latest_Assigned_Course._id,
+
+                latest_Assigned_Course_title:
+                    get_Latest_Assigned_Course_Data.title,
+
+                latest_Assigned_Course_start_date:
+                    get_Latest_Assigned_Course_Data.start_date,
+            } : {}
         }
+
 
 
         // get upcoming 2 schedules
@@ -75,11 +86,13 @@ module.exports = async (req, res, next) => {
         })
             .sort({ scheduled_time: 1 })
             .limit(2)
-            .select("scheduled_time title _id")
+            .select("scheduled_time title _id");
+
+
 
         const quickOverview = {
             total_courses_teaching,
-            total_enrolled_students_for_this_faculty: enrolled_students_for_this_faculty.length > 0 ? enrolled_students_for_this_faculty[0].total_students : 0,
+            total_enrolled_students_for_this_faculty,
             latest_Assigned_Course,
             upcoming_Class_Schedules
         }
