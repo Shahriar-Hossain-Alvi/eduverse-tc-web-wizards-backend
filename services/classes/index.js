@@ -11,7 +11,7 @@ router.use(verifyToken)
 // create a class schedule by faculty (admin functionality will be added)
 router.post("/", verifyRole("admin", "faculty"), require("./controllers/create-classes"));
 
-// get all classes
+// get all classes for admin
 router.get("/", require("./controllers/get-classes"));
 
 
@@ -24,6 +24,10 @@ router.get("/:id", verifyRole("admin", "faculty", "student"), require("./control
 
 // get all classes for a faculty
 router.get("/allAssignedCourseClasses/:id", verifyRole("faculty"), require("./controllers/get-all-assignedClassesByFacultyId"));
+
+
+// get all classes for a student
+router.get("/allEnrolledCourseClasses/:id", verifyRole("student"), require("./controllers/get-all-enrolledClasses"));
 
 
 // delete a class
