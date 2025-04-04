@@ -5,15 +5,11 @@ const CourseFacultyAssignment = require("../schema/courseFacultyAssignment.schem
 module.exports = async (req, res, next) => {
     try {
         //fetch all assignments
-        const result = await CourseFacultyAssignment.find().select("-__v")
-        .populate("users_id", "email first_name last_name")
-        .populate("course_id", "title description"); 
+        const result = await CourseFacultyAssignment.find().select("-__v -updatedAt -createdAt")
+        .populate("users_id", "first_name last_name")
+        .populate("course_id", "title credits start_date end_date is_active cover_url total_available_seats"); 
 
 
-        // if courseFacultyAssignment list is empty
-        if (result.length === 0) {
-            return new ErrorResponse("There are no Course Faculty Assignment available", 404)
-        }
 
         // send response
         res.status(200).json({

@@ -9,11 +9,12 @@ router.use(verifyToken)
 // create courseFacultyAssignment => used in course details to create courseFacultyAssignment data by admin while adding/updating faculty so using PUT method
 router.post("/", verifyRole("admin"), require("./controllers/create-courseFacultyAssignment"));
 
-// get all courseFacultyAssignment
-router.get("/", require("./controllers/get-courseFacultyAssignment"));
+// get all courseFacultyAssignment in admin account
+router.get("/", verifyRole("admin"),require("./controllers/get-all-courseFacultyAssignment"));
 
 // get a courseFacultyAssignment by faculty id => used in faculty dashboard to get all assigned courses
 router.get("/myAssignedCourses/:facultyId", verifyRole("faculty"), require("./controllers/get-courseFacultyAssignmentByFaculty"));
+
 
 // get a courseFacultyAssignment => used in singleAssignedCoursesDetails page to get course details
 router.get("/:id", verifyRole("admin", "faculty"), require("./controllers/get-a-courseFacultyAssignment"));
