@@ -20,9 +20,9 @@ router.get("/myAssignedCourses/:facultyId", verifyRole("faculty"), require("./co
 router.get("/:id", verifyRole("admin", "faculty"), require("./controllers/get-a-courseFacultyAssignment"));
 
 // delete all courseFacultyAssignment
-router.delete("/:id", require("./controllers/delete-courseFacultyAssignment"));
+router.delete("/:id", verifyRole("admin"), require("./controllers/delete-courseFacultyAssignment"));
 
 // update a courseFacultyAssignment
-router.patch("/:id", require("./controllers/update-courseFacultyAssignment"));
+router.patch("/:id", verifyRole("admin"), require("./controllers/update-courseFacultyAssignment"));
 
 module.exports = router;

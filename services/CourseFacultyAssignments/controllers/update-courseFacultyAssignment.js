@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const ErrorResponse = require("../../../utils/middleware/error/error.response");
 const CourseFacultyAssignment = require("../schema/courseFacultyAssignment.schema");
+const logActivity = require("../../../utils/LogActivity/logActivity");
 
 
 module.exports = async (req, res, next) => {
@@ -19,6 +20,7 @@ module.exports = async (req, res, next) => {
 	if (users_id && (!Array.isArray(users_id) || !users_id.every((id) => mongoose.Types.ObjectId.isValid(id)))) {
 		return next(new ErrorResponse("Invalid users_id: All IDs must be valid MongoDB ObjectIDs", 400));
 	}
+
 	if (course_id && !mongoose.Types.ObjectId.isValid(course_id)) {
 		return next(new ErrorResponse("Invalid course_id: Must be a valid MongoDB ObjectID", 400));
 	}
@@ -40,6 +42,10 @@ module.exports = async (req, res, next) => {
 
 		// If CourseFacultyAssignment not found
 		if (!result) return next(new ErrorResponse("No CourseFacultyAssignment found with the given ID", 404));
+
+		await logActivity(`Updated Course Assignment id: ${id}`, 
+			"Course assignment(${id}) is update"
+		)
 
 		// send response
 		res.status(200).json({
