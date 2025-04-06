@@ -16,6 +16,9 @@ router.post("/", verifyRole("student"), require("./controllers/create-courseStud
 router.get("/", require("./controllers/get-courseStudentEnrollment"));
 
 
+// get all courseStudentEnrollment for a faculty
+router.get("/allEnrolledStudentForFaculty/:id", verifyRole("faculty"), require("./controllers/get-allStudentEnrollmentFor-a-faculty"));
+
 
 // get student enrollment list for a course => for admin and faculty 
 router.get("/enrollmentList/:id", verifyRole("admin", "faculty"), require("./controllers/get-allStudentEnrollmentFor-a-course"));

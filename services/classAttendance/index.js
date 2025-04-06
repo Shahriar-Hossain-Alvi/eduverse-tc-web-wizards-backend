@@ -13,7 +13,7 @@ router.post("/", verifyRole("admin", "faculty"), require("./controllers/create-c
 
 
 // get all class attendance
-router.get("/", require("./controllers/get-all-classAttendance"));
+router.get("/", verifyRole("admin"),require("./controllers/get-all-classAttendance"));
 
 
 // delete class attendance
