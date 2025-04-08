@@ -6,6 +6,7 @@ const CourseStudentEnrollment = require('../schema/courseStudentEnrollment.schem
 module.exports = async (req, res, next) => {
     const course_id = req.params.id;
 
+
     // Check if the ID is valid MongoDB ObjectId
     if (!mongoose.Types.ObjectId.isValid(course_id)) {
         return next(new ErrorResponse("Invalid Course ID", 400));
