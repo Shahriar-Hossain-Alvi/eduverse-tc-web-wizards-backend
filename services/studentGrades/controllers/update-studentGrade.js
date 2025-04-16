@@ -4,8 +4,11 @@ const mongoose = require('mongoose');
 
 module.exports = async (req, res, next) => {
     const { params: { id },
-        body: { grade, is_active }
+        body: { obtained_marks, remarks, is_active }
     } = req;
+
+    console.log(id);
+    console.log(req.body);
 
     // Check if ID is provided
     if (!id) {
@@ -17,12 +20,9 @@ module.exports = async (req, res, next) => {
         return next(new ErrorResponse("Invalid ID!", 400));
     }
 
-    // Check if required fields are provided
-    if (grade === undefined) {
-        return next(new ErrorResponse("Grade is required", 400));
-    }
 
     try {
+
         // Find the grade by ID
         const gradeToUpdate = await StudentGrade.findById(id);
 
@@ -31,12 +31,22 @@ module.exports = async (req, res, next) => {
             return next(new ErrorResponse("Student grade not found.", 404));
         }
 
-        // Update fields
-        if (grade !== undefined) gradeToUpdate.grade = grade;
-        if (is_active !== undefined) gradeToUpdate.is_active = is_active;
+        const updateDoc = {};
+
+        if (obtained_marks !== undefined) {
+            const parsed = parseFloat(obtained_marks);
+            if (!isNaN(parsed)) {
+              updateDoc.obtained_marks = parsed;
+            } else {
+              return next(new ErrorResponse("Obtained marks must be a valid number", 400));
+            }
+          }
+
+        if (remarks !== undefined) updateDoc.remarks = remarks;
+        if (is_active !== undefined) updateDoc.is_active = is_active;
 
         // Save the updated grade
-        const updatedGrade = await gradeToUpdate.save();
+        const updatedGrade = await StudentGrade.findByIdAndUpdate(id, updateDoc, { new: true });
 
         // Send success response
         res.status(200).json({

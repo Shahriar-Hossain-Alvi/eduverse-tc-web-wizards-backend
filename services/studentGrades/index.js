@@ -27,6 +27,6 @@ router.delete("/deleteAllGrades/:course_id", verifyRole("admin", "faculty"), req
 
 
 // update a student grade
-router.patch("/:id", require("./controllers/update-studentGrade"))
+router.patch("/:id", verifyRole("admin", "faculty"), require("./controllers/update-studentGrade"))
 
 module.exports = router;
