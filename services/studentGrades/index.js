@@ -12,8 +12,8 @@ router.post("/", verifyRole("admin", "faculty"), require("./controllers/create-s
 // get all grades data
 router.get("/", require("./controllers/get-studentGrades"));
 
-// get single student grades by course 
-router.get("/course/:id", require("./controllers/get-studentGradesByCourseId"));
+// get student grades by course 
+router.get("/course/:id", verifyRole("admin", "faculty", "student"), require("./controllers/get-studentGradesByCourseId"));
 
 
 // get single student grades

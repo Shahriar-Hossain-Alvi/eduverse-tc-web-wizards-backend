@@ -24,8 +24,6 @@ router.get("/allEnrolledStudentForFaculty/:id", verifyRole("faculty"), require("
 router.get("/enrollmentList/:id", verifyRole("admin", "faculty"), require("./controllers/get-allStudentEnrollmentFor-a-course"));
 
 
-
-
 // get enrolled courses for a single student => My Courses (Student)
 router.get("/myEnrolledCourses/:student_id", verifyRole("student"), require("./controllers/get-singleStudentEnrolledCourses"));
 
