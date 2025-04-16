@@ -22,6 +22,10 @@ router.get("/:id", require("./controllers/get-a-studentGrade"));
 // delete a student grade
 router.delete("/:id", require("./controllers/delete-studentGrade"));
 
+// delete all grades of a course
+router.delete("/deleteAllGrades/:course_id", verifyRole("admin", "faculty"), require("./controllers/delete-allStudentGradeByCourseId"));
+
+
 // update a student grade
 router.patch("/:id", require("./controllers/update-studentGrade"))
 
