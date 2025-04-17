@@ -2,12 +2,14 @@ const ErrorResponse = require("../../../utils/middleware/error/error.response");
 const User = require("../schema/user.schema");
 const bcrypt = require('bcryptjs');
 const logActivity = require("../../../utils/LogActivity/logActivity");
+const sgMail = require('@sendgrid/mail');
+const { SENDGRID_API_KEY } = require("../../../configuration");
 
 // Create a new User 
 module.exports = async (req, res, next) => {
 	const { email, password, user_role, first_name, last_name } = req.body;
 
-	
+
 	try {
 		if (!email || !password || !user_role || !first_name || !last_name) {
 			return next(
@@ -38,6 +40,29 @@ module.exports = async (req, res, next) => {
 		// save the new user in the DB
 		const result = await newUser.save();
 
+
+		// send login credentials to the user by email (nodemailer)		
+		sgMail.setApiKey(SENDGRID_API_KEY);
+		const msg = {
+			to: email,
+			from: 'shahriarhossainalvi@gmail.com',
+			subject: 'Eduverse login credentials',
+			html: `
+			<div style="font-family: inherit; text-align: center"><strong>EDUVERSE ACCOUNT CREATION</strong></div>
+
+			<div style="font-family: inherit; text-align: inherit"><br></div>
+
+			<div style="font-family: inherit; text-align: inherit">Your account has been created by the admin(s).&nbsp;</div>
+
+			<div style="font-family: inherit; text-align: inherit"><strong>Login email: </strong>${email}</div>
+
+			<div style="font-family: inherit; text-align: inherit"><strong>Password: </strong>${password}</div>
+
+			<div style="font-family: inherit; text-align: inherit"><br></div>
+
+			<div style="font-family: inherit; text-align: inherit"><strong>NOTE:</strong> Change the password after logging into your account.</div>`,
+		}
+		const sendGridRes = await sgMail.send(msg);
 
 		// save new activity
 		await logActivity(

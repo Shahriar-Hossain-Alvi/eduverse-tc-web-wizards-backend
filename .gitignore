@@ -133,3 +133,4 @@ dist
 .env
 .env.*
 .vercel
+sendgrid.env
