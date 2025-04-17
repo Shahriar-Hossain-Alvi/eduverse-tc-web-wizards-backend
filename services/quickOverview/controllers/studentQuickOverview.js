@@ -63,7 +63,8 @@ module.exports = async (req, res, next) => {
         const allGrades = await StudentGrade.find({ student_id: id }).select("full_marks obtained_marks percentage");
 
         const totalPercentage = allGrades.reduce((acc, grade) => acc + (grade.percentage || 0), 0);
-        const avgPercentage = (totalPercentage / allGrades.length).toFixed(2);
+
+        const avgPercentage = allGrades.length > 0 ? (totalPercentage / allGrades.length).toFixed(2) : 0;
 
 
 
@@ -74,19 +75,18 @@ module.exports = async (req, res, next) => {
         let presentCount = 0;
 
         classAttendanceData.forEach(data => {
-            const record = data.attendance_record.find(rec=> rec.student_id.toString() === id);
+            const record = data.attendance_record.find(rec => rec.student_id.toString() === id);
 
-            if(record){
+            if (record) {
                 totalClasses++;
-                if(record.is_present !== "absent"){
+                if (record.is_present !== "absent") {
                     presentCount++;
                 }
             }
         });
 
-        const avgAttendance = totalClasses > 0 ? ((presentCount/totalClasses)*100).toFixed(2) : 0;
+        const avgAttendance = totalClasses > 0 ? ((presentCount / totalClasses) * 100).toFixed(2) : 0;
 
-        console.log(avgAttendance);
 
         const quickOverview = {
             total_Enrolled_courses,
