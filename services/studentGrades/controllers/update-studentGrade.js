@@ -7,8 +7,6 @@ module.exports = async (req, res, next) => {
         body: { obtained_marks, remarks, is_active }
     } = req;
 
-    console.log(id);
-    console.log(req.body);
 
     // Check if ID is provided
     if (!id) {

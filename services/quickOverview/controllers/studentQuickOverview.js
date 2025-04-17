@@ -2,7 +2,8 @@ const mongoose = require("mongoose");
 const Course = require("../../courses/schema/course.schema");
 const CourseStudentEnrollment = require("../../courseStudentEnrollment/schema/courseStudentEnrollment.schema")
 const Class = require("../../classes/schema/classes.schema")
-
+const StudentGrade = require("../../studentGrades/schema/studentGrade.schema");
+const ClassAttendance = require("../../classAttendance/schema/classAttendance.schema");
 
 module.exports = async (req, res, next) => {
 
@@ -54,14 +55,45 @@ module.exports = async (req, res, next) => {
             course_id: { $in: courseIds },
             scheduled_time: { $gte: now }
         }).sort({ scheduled_time: 1 })
-        .limit(2)
-        .select("_id scheduled_time title") : []
+            .limit(2)
+            .select("_id scheduled_time title") : []
 
+
+        // get average grade
+        const allGrades = await StudentGrade.find({ student_id: id }).select("full_marks obtained_marks percentage");
+
+        const totalPercentage = allGrades.reduce((acc, grade) => acc + (grade.percentage || 0), 0);
+        const avgPercentage = (totalPercentage / allGrades.length).toFixed(2);
+
+
+
+        // avg class attendance
+        const classAttendanceData = await ClassAttendance.find({ "attendance_record.student_id": id }).select("attendance_record");
+
+        let totalClasses = 0;
+        let presentCount = 0;
+
+        classAttendanceData.forEach(data => {
+            const record = data.attendance_record.find(rec=> rec.student_id.toString() === id);
+
+            if(record){
+                totalClasses++;
+                if(record.is_present !== "absent"){
+                    presentCount++;
+                }
+            }
+        });
+
+        const avgAttendance = totalClasses > 0 ? ((presentCount/totalClasses)*100).toFixed(2) : 0;
+
+        console.log(avgAttendance);
 
         const quickOverview = {
             total_Enrolled_courses,
             latest_Enrolled_Courses,
-            upcoming_classes
+            upcoming_classes,
+            avgPercentage,
+            avgAttendance
         }
 
 

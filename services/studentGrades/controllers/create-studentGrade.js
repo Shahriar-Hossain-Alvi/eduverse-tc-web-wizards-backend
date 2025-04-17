@@ -3,6 +3,7 @@ const User = require("../../users/schema/user.schema");
 const Course = require("../../courses/schema/course.schema");
 const CourseStudentEnrollment = require("../../courseStudentEnrollment/schema/courseStudentEnrollment.schema");
 const ErrorResponse = require("../../../utils/middleware/error/error.response");
+const logActivity = require("../../../utils/LogActivity/logActivity")
 
 
 
@@ -62,6 +63,12 @@ module.exports = async (req, res, next) => {
 
         // Save the grade to the database
         await studentGrade.save();
+
+        //save log activity
+        await logActivity(`Grades added for course: ${course_id}`,
+            `New grades added of course id: ${course_id}, by faculty: ${faculty_id} for student: ${student_id}`
+        )
+
 
         // Return success response
         res.status(201).json({
