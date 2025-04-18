@@ -25,6 +25,7 @@ module.exports = async (req, res, next) => {
 
 		// Update the user's password and mark as no longer requiring an update
 		user.password_hashed = hashedPass;
+		user.password_update_required = false;
 		await user.save();
 
 		res.status(200).json({

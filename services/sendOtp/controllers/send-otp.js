@@ -11,7 +11,13 @@ module.exports = async (req, res, next) => {
 
     try {
         const otp = generateOtp();
-        await sendOtpEmail(email, otp);
+
+        try {
+            await sendOtpEmail(email, otp);
+        } catch (error) {
+            return next(new ErrorResponse("Failed to send OTP email", 500));
+        }
+        
 
         // Remove old OTPs for the same email
         await Otp.deleteMany({ email });

@@ -11,7 +11,7 @@ const transporter = nodemailer.createTransport({
 });
 
 // Send email function
-const sendOtpEmail = (to, otp) => {
+const sendOtpEmail = async (to, otp) => {
     const mailOptions = {
         from: OTP_SENDER_EMAIL, // Replace with your email
         to: to,  // Recipient's email address
@@ -19,17 +19,9 @@ const sendOtpEmail = (to, otp) => {
         text: `Your OTP is: ${otp}` // Message body with OTP
     };
 
-    return new Promise((resolve, reject) => {
-        transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-                console.log('Error sending email:', error);
-                reject(error);
-            } else {
-                console.log('OTP sent:', info.response);
-                resolve(info);
-            }
-        });
-    });
+    const otpResponse = await transporter.sendMail(mailOptions); // throws if fails
+    
+    return otpResponse;
 };
 
 module.exports = sendOtpEmail;
