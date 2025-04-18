@@ -40,4 +40,8 @@ router.use("/quickOverview", require("./quickOverview"));
 router.use("/deletedMaterials", require("./deletedMaterials"))
 
 
+// otp send
+router.use("/sendOTP", require("./sendOtp"));
+
+
 module.exports = router;

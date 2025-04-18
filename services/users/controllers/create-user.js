@@ -62,7 +62,7 @@ module.exports = async (req, res, next) => {
 
 			<div style="font-family: inherit; text-align: inherit"><strong>NOTE:</strong> Change the password after logging into your account.</div>`,
 		}
-		const sendGridRes = await sgMail.send(msg);
+		await sgMail.send(msg);
 
 		// save new activity
 		await logActivity(
