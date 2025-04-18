@@ -41,7 +41,7 @@ router.use("/deletedMaterials", require("./deletedMaterials"))
 
 
 // otp send
-router.use("/sendOTP", require("./sendOtp"));
+router.use("/otp", require("./sendOtp"));
 
 
 module.exports = router;
