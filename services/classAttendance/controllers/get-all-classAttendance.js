@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+
 const ClassAttendance = require("../schema/classAttendance.schema");
 const ErrorResponse = require("../../../utils/middleware/error/error.response");
 
@@ -7,9 +7,9 @@ module.exports = async (req, res, next) => {
         // Fetch all attendance records
         const attendanceRecords = await ClassAttendance.find({})
             .populate("class_id", "title")
-            .populate("created_by", "first_name last_name email")
             .populate("attendance_record.student_id", "first_name last_name email")
-            .select("-__v -updatedAt");
+            .populate("created_by", "first_name last_name")
+            .select("-__v -updatedAt -createdAt");
 
         // Check if records exist
         if (!attendanceRecords || attendanceRecords.length === 0) {
