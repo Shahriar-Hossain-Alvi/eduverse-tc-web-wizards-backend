@@ -48,8 +48,23 @@ studentGradesSchema.virtual("percentage").get(function (){
 });
 
 // include virtual field when converting to JSON or Object
-studentGradesSchema.set("toObject", { virtuals: true });
-studentGradesSchema.set("toJSON", { virtuals: true });
+studentGradesSchema.set("toObject", { 
+    virtuals: true,
+    versionKey: false,
+    transform: function (doc, ret){
+        delete ret.id;
+        return ret;
+    }
+ });
+
+studentGradesSchema.set("toJSON", { 
+    virtuals: true,
+    versionKey: false,
+    transform: function (doc, ret){
+      delete ret.id;
+      return ret  
+    }
+});
 
 const StudentGrade = mongoose.model("StudentGrade", studentGradesSchema);
 

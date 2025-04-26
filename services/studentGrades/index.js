@@ -16,6 +16,10 @@ router.get("/", require("./controllers/get-studentGrades"));
 router.get("/course/:id", verifyRole("admin", "faculty", "student"), require("./controllers/get-studentGradesByCourseId"));
 
 
+// get student grades by student id 
+router.get("/student/:id", verifyRole("admin", "faculty", "student"), require("./controllers/get-a-studentGradeByStudentId"));
+
+
 // get single student grades
 router.get("/:id", require("./controllers/get-a-studentGrade"));
 
