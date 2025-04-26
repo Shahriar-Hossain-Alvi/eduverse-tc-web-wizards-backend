@@ -22,7 +22,7 @@ module.exports = async (req, res, next) => {
         })
         .populate("course_id", "title credits start_date end_date -_id")
         .populate("faculty_id", "first_name last_name -_id")
-        .populate("student_id", "first_name last_name -_id")
+        .populate("student_id", "first_name last_name email phone _id")
         .select("-__v -updatedAt -createdAt -is_active")
 
 

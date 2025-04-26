@@ -5,7 +5,7 @@ const verifyToken = (req, res, next) => {
     // Check for authorization header
     if (!req.headers.authorization) {
         return next(
-            new ErrorResponse("Unauthorized access", 401)
+            new ErrorResponse("Unauthorized access. No headers in authorization", 401)
         )
     }
     // console.log(req.headers.authorization);
@@ -17,7 +17,7 @@ const verifyToken = (req, res, next) => {
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
         if (err) {
             return next(
-                new ErrorResponse('Unauthorized access', 401)
+                new ErrorResponse('Unauthorized access. No Token', 401)
             )
         }
 

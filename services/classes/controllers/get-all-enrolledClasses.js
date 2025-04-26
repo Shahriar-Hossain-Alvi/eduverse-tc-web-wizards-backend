@@ -8,6 +8,8 @@ const CourseStudentEnrollment = require("../../courseStudentEnrollment/schema/co
 module.exports = async (req, res, next) => {
     const { id } = req?.params; // student id
 
+
+
     if (!id) {
         return next(new ErrorResponse("id is required", 400));
     }
