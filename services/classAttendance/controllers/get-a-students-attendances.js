@@ -79,9 +79,8 @@ module.exports = async (req, res, next) => {
             // get the data with populated class and faculty
             {
                 $project: {
-                    // class_id: 1,
+                    class_id: 1,
                     attendance_date: 1,
-                    // created_by: 1,
                     faculty_info: 1,
                     attendance_record: 1,
                     class_info: {
