@@ -23,6 +23,8 @@ router.delete("/:id",verifyRole("admin", "faculty"), require("./controllers/dele
 // update a class Attendance
 router.patch("/:id", verifyRole("admin", "faculty"), require("./controllers/update-classAttendance"));
 
+// get all attendance of a student
+router.get("/studentAttendance/:id", verifyRole("admin", "faculty", "student"), require("./controllers/get-a-students-attendances"));
 
 // get class attendance for a specific class
 router.get("/:class_id", verifyRole("admin", "faculty", "student"), require("./controllers/get-a-classAttendance"));
