@@ -41,6 +41,11 @@ router.patch("/updatePassword/:id", verifyRole("student", "faculty", "admin"), r
 
 
 
+// Get public info for a user eg:in student academic info page
+router.get("/publicInfo/:id", verifyRole("admin", "faculty", "student"), require("./controllers/get-publicInfo-of-a-user"));
+
+
+
 // Get a user by id => used in the admin panel to get individual user data
 router.get("/:id", verifyRole("admin"), require("./controllers/get-a-user"));
 

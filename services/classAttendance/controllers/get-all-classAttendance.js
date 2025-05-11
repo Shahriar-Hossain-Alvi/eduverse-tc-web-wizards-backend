@@ -9,7 +9,7 @@ module.exports = async (req, res, next) => {
             .populate("class_id", "title")
             .populate("attendance_record.student_id", "first_name last_name email")
             .populate("created_by", "first_name last_name")
-            .select("-__v -updatedAt -createdAt");
+            .select("-__v -updatedAt");
 
         // Check if records exist
         if (!attendanceRecords || attendanceRecords.length === 0) {
