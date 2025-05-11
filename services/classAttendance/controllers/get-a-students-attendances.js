@@ -13,15 +13,18 @@ module.exports = async (req, res, next) => {
     try {
         // Fetch attendance records
         const attendanceRecords = await ClassAttendance.aggregate([
+            // match the student id in the collection
             {
                 $match: {
                     "attendance_record.student_id": new mongoose.Types.ObjectId(id),
                 },
             },
+            // get the data
             {
                 $project: {
                     class_id: 1,
                     attendance_date: 1,
+                    created_by: 1,
                     attendance_record: {
                         $filter: {
                             input: "$attendance_record",
@@ -34,8 +37,34 @@ module.exports = async (req, res, next) => {
                 }
             },
             {
-                $unwind: "$attendance_record",// optional, flattens the array
+                $unwind: "$attendance_record",//flattens the array
             },
+            // find and populate faculty info
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "created_by",
+                    foreignField: "_id",
+                    as: "faculty_info",
+                }
+            },
+            {
+                $unwind: "$faculty_info",
+            },
+            // get the data with populated faculty field
+            {
+                $project: {
+                    class_id: 1,
+                    attendance_date: 1,
+                    created_by: 1,
+                    attendance_record: 1,
+                    faculty_info: {
+                        first_name: "$faculty_info.first_name",
+                        last_name: "$faculty_info.last_name",
+                    }
+                }
+            },
+            // find and populate class_id
             {
                 $lookup: {
                     from: "classes",
@@ -45,16 +74,18 @@ module.exports = async (req, res, next) => {
                 }
             },
             {
-                $unwind: "$class_info",// optional, flattens the array
+                $unwind: "$class_info",//flattens the array
             },
+            // get the data with populated class and faculty
             {
                 $project: {
-                    class_id: 1,
+                    // class_id: 1,
                     attendance_date: 1,
+                    // created_by: 1,
+                    faculty_info: 1,
                     attendance_record: 1,
                     class_info: {
                         title: "$class_info.title",
-                        scheduled_time: "$class_info.scheduled_time"
                     }
                 }
             }
