@@ -5,21 +5,25 @@ const Class = require("../schema/classes.schema");
 
 // get all class
 module.exports = async (req, res, next) => {
+    const { search } = req.query;
 
     const now = new Date();
     try {
+        const searchedClass = search ? { title: { $regex: search, $options: "i" } } : {};
+
+
         // Fetch upcoming classes (today & future) - sorted in ascending order
-        const upcomingClasses = await Class.find({
-            scheduled_time: { $gte: now }
-        }).sort({ scheduled_time: 1 }) // Ascending order (earliest first)
+        const upcomingClasses = await Class.find({ scheduled_time: { $gte: now }, ...searchedClass }).sort({ scheduled_time: 1 }) // Ascending order (earliest first)
             .select("-__v -updatedAt -createdAt").populate({
                 path: "faculty_id",
                 select: "first_name last_name"
             });;
 
+
+
         // fetch past classes
         const pastClasses = await Class.find({
-            scheduled_time: { $lt: now }
+            scheduled_time: { $lt: now }, ...searchedClass
         }).select("-__v -updatedAt -createdAt").populate({
             path: "faculty_id",
             select: "first_name last_name"

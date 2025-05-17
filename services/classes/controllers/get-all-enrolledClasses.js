@@ -7,7 +7,7 @@ const CourseStudentEnrollment = require("../../courseStudentEnrollment/schema/co
 // get all courses
 module.exports = async (req, res, next) => {
     const { id } = req?.params; // student id
-
+    const { search } = req.query;
 
 
     if (!id) {
@@ -21,6 +21,8 @@ module.exports = async (req, res, next) => {
 
     const now = new Date();
     try {
+        const searchedClass = search ? { title: { $regex: search, $options: "i" } } : {};
+
         // find enrolled courses
         const enrolledCourses = await CourseStudentEnrollment.find({
             users_id: new mongoose.Types.ObjectId(id)
@@ -41,7 +43,7 @@ module.exports = async (req, res, next) => {
         // Fetch upcoming classes (today & future) - sorted in ascending order
         const upcomingClasses = await Class.find({
             course_id: { $in: courseIds },
-            scheduled_time: { $gte: now }
+            scheduled_time: { $gte: now }, ...searchedClass
         }).sort({ scheduled_time: 1 }) // Ascending order (earliest first)
             .select("-__v -updatedAt -createdAt").populate({
                 path: "faculty_id",
@@ -51,7 +53,7 @@ module.exports = async (req, res, next) => {
         // fetch past classes
         const pastClasses = await Class.find({
             course_id: { $in: courseIds },
-            scheduled_time: { $lt: now }
+            scheduled_time: { $lt: now }, ...searchedClass
         }).select("-__v -updatedAt -createdAt").populate({
             path: "faculty_id",
             select: "first_name last_name"
