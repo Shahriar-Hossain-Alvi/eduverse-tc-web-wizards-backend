@@ -11,7 +11,6 @@ const ErrorResponse = require("../../../utils/middleware/error/error.response");
 // Delete a CourseFacultyAssignment by ID
 module.exports = async (req, res, next) => {
   const { params: { id } } = req;
-  console.log(id);
 
   // Check if the ID is a valid MongoDB ObjectId
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -22,7 +21,6 @@ module.exports = async (req, res, next) => {
     // Find the CourseFacultyAssignment by ID and delete it
     const deleteAssignedCourse = await CourseFacultyAssignment.findByIdAndDelete(id);
 
-    console.log(deleteAssignedCourse);
 
     // If no CourseFacultyAssignment is found, return an error
     if (!deleteAssignedCourse) {

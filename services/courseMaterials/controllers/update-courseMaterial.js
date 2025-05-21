@@ -35,12 +35,12 @@ module.exports = async (req, res, next) => {
         // Update fields only if provided
         if (title && (material.title !== title)) {
             updateData.title = title;
-            console.log("Title is changing...");
+            // console.log("Title is changing...");
         }
 
         if (description && (material.description !== description)) {
             updateData.description = description;
-            console.log("Description is changing...");
+            // console.log("Description is changing...");
         };
 
         if (material_url && material_url !== oldMaterialUrl) {
@@ -59,12 +59,12 @@ module.exports = async (req, res, next) => {
 
         if (is_active !== undefined) {
             updateData.is_active = is_active; // Allows explicit false
-            console.log("Is Active is changing...");
+            // console.log("Is Active is changing...");
         }
 
         if (created_by && (material.created_by !== created_by)) {
             updateData.created_by = created_by;
-            console.log("Created By is changing");
+            // console.log("Created By is changing");
         };
 
         if(Object.keys(updateData).length === 0) {
