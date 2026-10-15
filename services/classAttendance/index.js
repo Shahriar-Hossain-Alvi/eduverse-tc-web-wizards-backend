@@ -9,25 +9,25 @@ router.use(verifyToken)
 
 
 // create a class attendance
-router.post("/", verifyRole("admin", "faculty"), require("./controllers/create-classAttendance"));
+router.post("/", verifyRole("admin", "super_admin", "faculty"), require("./controllers/create-classAttendance"));
 
 
 // get all class attendance
-router.get("/", verifyRole("admin"),require("./controllers/get-all-classAttendance"));
+router.get("/", verifyRole("admin", "super_admin"),require("./controllers/get-all-classAttendance"));
 
 
 // delete class attendance
-router.delete("/:id",verifyRole("admin", "faculty"), require("./controllers/delete-classAttendance"));
+router.delete("/:id",verifyRole("admin", "super_admin", "faculty"), require("./controllers/delete-classAttendance"));
 
 
 // update a class Attendance
-router.patch("/:id", verifyRole("admin", "faculty"), require("./controllers/update-classAttendance"));
+router.patch("/:id", verifyRole("admin", "super_admin", "faculty"), require("./controllers/update-classAttendance"));
 
 // get all attendance of a student
-router.get("/studentAttendance/:id", verifyRole("admin", "faculty", "student"), require("./controllers/get-a-students-attendances"));
+router.get("/studentAttendance/:id", verifyRole("admin", "super_admin", "faculty", "student"), require("./controllers/get-a-students-attendances"));
 
 // get class attendance for a specific class
-router.get("/:class_id", verifyRole("admin", "faculty", "student"), require("./controllers/get-a-classAttendance"));
+router.get("/:class_id", verifyRole("admin", "super_admin", "faculty", "student"), require("./controllers/get-a-classAttendance"));
 
 
 

@@ -17,13 +17,16 @@
 		"cloudinary": "^2.5.1",
 		"cors": "2.8.5",
 		"dotenv": "16.4.7",
-		"express": "4.21.2",
+		"express": "^4.22.3",
 		"jsonwebtoken": "^9.0.2",
-		"mongoose": "8.8.4",
-		"nodemailer": "^6.9.16",
+		"mongoose": "^8.24.5",
+		"nodemailer": "^10.1.1",
 		"otp-generator": "^4.0.1"
 	},
 	"devDependencies": {
-		"nodemon": "^3.1.7"
+		"nodemon": "^3.1.14"
+	},
+	"overrides": {
+		"braces": "^3.0.3"
 	}
 }

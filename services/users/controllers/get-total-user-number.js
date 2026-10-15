@@ -14,9 +14,11 @@ module.exports = async (req, res, next) => {
 
         const all_admin = await User.find({ user_role: "admin" });
         const total_admin = all_admin.length;   
-        
 
-        const total_user_count = {total_faculty: total_faculty, total_student:total_student, total_admin:total_admin}
+        const all_super_admin = await User.find({ user_role: "super_admin" });
+        const total_super_admin = all_super_admin.length;   
+
+        const total_user_count = {total_faculty: total_faculty, total_student:total_student, total_admin:total_admin, total_super_admin: total_super_admin}
 
         res.status(201).json({
             success: true,

@@ -11,7 +11,7 @@ router.use(verifyToken); // will apply to the below routes
 
 
 // Get all users => used in admins Users route to show list 
-router.get("/", verifyRole("admin"), require("./controllers/get-users")); 
+router.get("/", verifyRole("admin", "super_admin"), require("./controllers/get-users")); 
 
 
 
@@ -22,12 +22,12 @@ router.get("/me", require("./controllers/me"));
 
 
 // Get all faculty => get faculty name, id and admin will assign them to courses 
-router.get("/allFacultyNames", verifyRole("admin", "faculty"), require("./controllers/get-all-facultyNames"));
+router.get("/allFacultyNames", verifyRole("admin", "super_admin", "faculty"), require("./controllers/get-all-facultyNames"));
 
 
 
 // Create a new user => used in create-account page of admin panel
-router.post("/", verifyRole("admin"), require("./controllers/create-user"));
+router.post("/", verifyRole("admin", "super_admin"), require("./controllers/create-user"));
 
 
 
@@ -36,18 +36,18 @@ router.get("/totalUsersNumber", require("./controllers/get-total-user-number"));
 
 
 // update user password after first login => used to update the password in the profile page
-router.patch("/updatePassword/:id", verifyRole("student", "faculty", "admin"), require("./controllers/update-user-password"));
+router.patch("/updatePassword/:id", verifyRole("student", "faculty", "admin", "super_admin"), require("./controllers/update-user-password"));
 
 
 
 
 // Get public info for a user eg:in student academic info page
-router.get("/publicInfo/:id", verifyRole("admin", "faculty", "student"), require("./controllers/get-publicInfo-of-a-user"));
+router.get("/publicInfo/:id", verifyRole("admin", "super_admin", "faculty", "student"), require("./controllers/get-publicInfo-of-a-user"));
 
 
 
 // Get a user by id => used in the admin panel to get individual user data
-router.get("/:id", verifyRole("admin"), require("./controllers/get-a-user"));
+router.get("/:id", verifyRole("admin", "super_admin"), require("./controllers/get-a-user"));
 
 
 // Update a user by id => used by all users to update their info

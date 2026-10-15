@@ -7,7 +7,7 @@ const verifyRole = require("../../utils/middleware/role-verification/verifyRole.
 router.use(verifyToken);
 
 // admin dashboard overview
-router.get("/admin", verifyRole("admin"), require("./controllers/adminQuickOverview"));
+router.get("/admin", verifyRole("admin", "super_admin"), require("./controllers/adminQuickOverview"));
 
 // faculty quick overview
 router.get("/faculty/:id", verifyRole("faculty"), require("./controllers/facultyQuickOverview"));

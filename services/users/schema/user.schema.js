@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema(
 		password_update_required: { type: Boolean, default: true },
 		user_role: {
 			type: String,
-			enum: ["student", "faculty", "admin"],
+			enum: ["student", "faculty", "admin", "super_admin"],
 			required: true,
 			default: "student"
 		},

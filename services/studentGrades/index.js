@@ -7,17 +7,17 @@ const verifyRole = require("../../utils/middleware/role-verification/verifyRole.
 router.use(verifyToken)
 
 // give grade to a course
-router.post("/", verifyRole("admin", "faculty"), require("./controllers/create-studentGrade"))
+router.post("/", verifyRole("admin", "super_admin", "faculty"), require("./controllers/create-studentGrade"))
 
 // get all grades data
 router.get("/", require("./controllers/get-studentGrades"));
 
 // get student grades by course 
-router.get("/course/:id", verifyRole("admin", "faculty", "student"), require("./controllers/get-studentGradesByCourseId"));
+router.get("/course/:id", verifyRole("admin", "super_admin", "faculty", "student"), require("./controllers/get-studentGradesByCourseId"));
 
 
 // get student grades by student id 
-router.get("/student/:id", verifyRole("admin", "faculty", "student"), require("./controllers/get-a-studentGradeByStudentId"));
+router.get("/student/:id", verifyRole("admin", "super_admin", "faculty", "student"), require("./controllers/get-a-studentGradeByStudentId"));
 
 
 // get single student grades
@@ -27,10 +27,10 @@ router.get("/:id", require("./controllers/get-a-studentGrade"));
 router.delete("/:id", require("./controllers/delete-studentGrade"));
 
 // delete all grades of a course
-router.delete("/deleteAllGrades/:course_id", verifyRole("admin", "faculty"), require("./controllers/delete-allStudentGradeByCourseId"));
+router.delete("/deleteAllGrades/:course_id", verifyRole("admin", "super_admin", "faculty"), require("./controllers/delete-allStudentGradeByCourseId"));
 
 
 // update a student grade
-router.patch("/:id", verifyRole("admin", "faculty"), require("./controllers/update-studentGrade"))
+router.patch("/:id", verifyRole("admin", "super_admin", "faculty"), require("./controllers/update-studentGrade"))
 
 module.exports = router;

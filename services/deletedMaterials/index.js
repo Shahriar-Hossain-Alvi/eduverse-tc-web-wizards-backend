@@ -7,6 +7,6 @@ const verifyRole = require("../../utils/middleware/role-verification/verifyRole.
 router.use(verifyToken)
 
 // get all deleted materials list
-router.get("/", verifyRole("admin"), require("./controllers/get-all-deletedMaterialsList"));
+router.get("/", verifyRole("admin", "super_admin"), require("./controllers/get-all-deletedMaterialsList"));
 
 module.exports = router;
